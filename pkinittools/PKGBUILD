@@ -1,0 +1,35 @@
+pkgname=pkinittools
+_reponame=pkinittools
+pkgver=latest
+pkgrel=1
+url=https://github.com/dirkjanm/${_reponame}
+arch=(any)
+license=(MIT)
+depends=(python)
+source=(git+${url})
+sha256sums=(SKIP)
+
+package() {
+  cd ${srcdir}/${_reponame}
+  mkdir -p ${pkgdir}/opt/archpkgs/{bin,lib} ${pkgdir}/opt/archpkgs/${pkgname}
+  python -m venv ${pkgdir}/opt/archpkgs/${pkgname}
+  cp ./*.py ./**/*.py ${pkgdir}/opt/archpkgs/${pkgname}/bin
+  source ${pkgdir}/opt/archpkgs/${pkgname}/bin/activate
+  pip install -r ./requirements.txt
+  pip freeze
+  for binary in ./*.py ./**/*.py; do
+    cat << EOF > ${pkgdir}/opt/archpkgs/bin/${pkgname}-$(basename ${binary%%.py})
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
+export PATH=\$VIRTUAL_ENV/bin:\$PATH
+exec python /opt/archpkgs/${pkgname}/bin/$(basename ${binary}) "\$@"
+EOF
+  chmod +x ${pkgdir}/opt/archpkgs/bin/${pkgname}-$(basename ${binary%%.py})
+  done
+}
+
+pkgver() {
+  cd ${srcdir}/${_reponame}
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}

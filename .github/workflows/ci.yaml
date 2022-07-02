@@ -1,0 +1,27 @@
+name: CI
+permissions:
+  contents: write
+on:
+  schedule:
+  - cron: 0 3 * * *
+jobs:
+  pages:
+    runs-on: ubuntu-20.04
+    concurrency: ci-${{ github.ref }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build container
+      run: docker build -t localhost/archpkgs-builder .
+    - name: Build packages
+      run: ./build-pkgs.sh
+    - name: Build package repository
+      run: ./build-repo.sh
+    - name: Deploy
+      # migrate to actions/deploy-pages@v1
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./repo

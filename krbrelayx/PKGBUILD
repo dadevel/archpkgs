@@ -1,0 +1,32 @@
+pkgname=krbrelayx
+pkgver=latest
+pkgrel=1
+url=https://github.com/dirkjanm/${pkgname}
+arch=(any)
+license=(MIT)
+depends=(python)
+source=(git+${url})
+sha256sums=(SKIP)
+
+package() {
+  cd ${srcdir}/${pkgname}
+  mkdir -p ${pkgdir}/opt/archpkgs/{bin,lib} ${pkgdir}/opt/archpkgs/${pkgname}
+  python -m venv ${pkgdir}/opt/archpkgs/${pkgname}
+  source ${pkgdir}/opt/archpkgs/${pkgname}/bin/activate
+  cp -r . ${pkgdir}/opt/archpkgs/${pkgname}/
+  for binary in ./*.py; do
+    cat << EOF > ${pkgdir}/opt/archpkgs/bin/${pkgname}-$(basename ${binary%%.py})
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
+export PYTHONPATH=/opt/archpkgs/${pkgname}
+exec python /opt/archpkgs/${pkgname}/$(basename ${binary}) "\$@"
+EOF
+  chmod +x ${pkgdir}/opt/archpkgs/bin/${pkgname}-$(basename ${binary%%.py})
+  done
+}
+
+pkgver() {
+  cd ${srcdir}/${pkgname}
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
