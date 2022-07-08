@@ -1,31 +1,31 @@
 pkgname=name-that-hash
 pkgver=latest
 pkgrel=1
-url=https://github.com/hashpals/${pkgname}
+url="https://github.com/hashpals/${pkgname}.git"
 arch=(any)
-license=(MIT)
+license=(GPL3)
 depends=(python)
-source=(git+${url})
+source=("git+${url}")
 sha256sums=(SKIP)
 
 package() {
-  cd ${srcdir}/${pkgname}
-  mkdir -p ${pkgdir}/opt/archpkgs/{bin,lib} ${pkgdir}/opt/archpkgs/${pkgname}
-  python -m venv ${pkgdir}/opt/archpkgs/${pkgname}
-  source ${pkgdir}/opt/archpkgs/${pkgname}/bin/activate
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  source "${pkgdir}/opt/archpkgs/${pkgname}/bin/activate"
   pip install .
   pip freeze
-  cat << EOF > ${pkgdir}/opt/archpkgs/bin/${pkgname}
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
 export PATH=\$VIRTUAL_ENV/bin:\$PATH
 exec python /opt/archpkgs/${pkgname}/bin/${pkgname} "\$@"
 EOF
-  chmod +x ${pkgdir}/opt/archpkgs/bin/${pkgname}
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
-  cd ${srcdir}/${pkgname}
+  cd "${srcdir}/${pkgname}"
   git describe --long --tags | sed 's|-|_|g'
 }

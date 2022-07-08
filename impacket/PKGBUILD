@@ -1,36 +1,35 @@
 pkgname=impacket
 pkgver=latest
 pkgrel=1
-url=https://github.com/secureauthcorp/${pkgname}
+url="https://github.com/secureauthcorp/${pkgname}.git"
 arch=(any)
-license=(MIT)
+license=(Apache)
 depends=(python)
-source=(git+${url})
+source=("git+${url}")
 sha256sums=(SKIP)
 
 package() {
-  cd ${srcdir}/${pkgname}
-  mkdir -p ${pkgdir}/opt/archpkgs/{bin,lib} ${pkgdir}/opt/archpkgs/${pkgname}
-  python -m venv ${pkgdir}/opt/archpkgs/${pkgname}
-  source ${pkgdir}/opt/archpkgs/${pkgname}/bin/activate
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  source "${pkgdir}/opt/archpkgs/${pkgname}/bin/activate"
   pip install .
   pip freeze
   for binary in ./examples/*.py; do
-    binname=$(basename ${binary%%.py})
-    binname=${binname,,}
-    #cp ${binary} ${pkgdir}/opt/archpkgs/${pkgname}/bin/$(basename ${binary})
-    cat << EOF > ${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}
+    binname="$(basename "${binary%%.py}")"
+    binname="${binname,,}"
+    cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
 export PATH=\$VIRTUAL_ENV/bin:\$PATH
-exec python /opt/archpkgs/${pkgname}/bin/$(basename ${binary}) "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/$(basename "${binary}") "\$@"
 EOF
-    chmod +x ${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}
+    chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}"
   done
 }
 
 pkgver() {
-  cd ${srcdir}/${pkgname}
+  cd "${srcdir}/${pkgname}"
   git describe --long --tags | sed 's|impacket_||;s|_|.|g;s|-|_|g' 
 }

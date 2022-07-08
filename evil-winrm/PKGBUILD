@@ -1,29 +1,29 @@
 pkgname=evil-winrm
 pkgver=latest
 pkgrel=1
-url=https://github.com/hackplayers/${pkgname}
+url="https://github.com/hackplayers/${pkgname}.git"
 arch=(any)
-license=(MIT)
+license=(LGPL3)
 depends=(ruby ruby-bundler)
-source=(git+${url})
+source=("git+${url}")
 sha256sums=(SKIP)
 
 package() {
-  cd ${srcdir}/${pkgname}
-  mkdir -p ${pkgdir}/opt/archpkgs/{bin,lib} ${pkgdir}/opt/archpkgs/${pkgname}
-  declare -x BUNDLE_PATH=${pkgdir}/opt/archpkgs/${pkgname}
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  declare -x BUNDLE_PATH="${pkgdir}/opt/archpkgs/${pkgname}"
   bundle install
-  cp ./${pkgname}.rb ${pkgdir}/opt/archpkgs/${pkgname}/
-  cat << EOF > ${pkgdir}/opt/archpkgs/bin/${pkgname}
+  cp "./${pkgname}.rb" "${pkgdir}/opt/archpkgs/${pkgname}/"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export BUNDLE_PATH=/opt/archpkgs/${pkgname}
 exec bundle exec /opt/archpkgs/${pkgname}/${pkgname}.rb "\$@"
 EOF
-  chmod +x ${pkgdir}/opt/archpkgs/bin/${pkgname}
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
-  cd ${srcdir}/${pkgname}
+  cd "${srcdir}/${pkgname}"
   git describe --long --tags | sed 's|-|_|g'
 }

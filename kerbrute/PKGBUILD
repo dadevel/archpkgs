@@ -1,7 +1,7 @@
 pkgname=kerbrute
 pkgver=latest
 pkgrel=1
-url="https://github.com/ropnop/${pkgname}"
+url="https://github.com/ropnop/${pkgname}.git"
 arch=(any)
 license=(Apache)
 makedepends=(git go)
