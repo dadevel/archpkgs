@@ -14,6 +14,9 @@ pacman -Sy
 pacman -Sl archpkgs
 ~~~
 
+All packages are installed under `/opt/archpkgs` to avoid conflicts.
+Add `export "PATH=/opt/archpkgs/bin:$PATH"` to your shell profile for easy access.
+
 ## Development
 
 Rebuild and install all packages.
