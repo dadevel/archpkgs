@@ -27,3 +27,6 @@ jobs:
         publish_dir: ./repo
         # dont keep history in gh-pages branch
         force_orphan: true
+        # commit author
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
