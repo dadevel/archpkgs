@@ -17,7 +17,7 @@ build() {
 
 package() {
   cd "${srcdir}/bloodhound"
-  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   cp -r ./BloodHound-linux-x64/. "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh

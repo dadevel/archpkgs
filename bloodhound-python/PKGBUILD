@@ -11,16 +11,14 @@ sha256sums=(SKIP)
 
 package() {
   cd "${srcdir}/${_reponame}"
-  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
-  source "${pkgdir}/opt/archpkgs/${pkgname}/bin/activate"
+  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  pip freeze
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
-export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
-export PATH=\$VIRTUAL_ENV/bin:\$PATH
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
 exec python /opt/archpkgs/${pkgname}/bin/${pkgname} "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"

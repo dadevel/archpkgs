@@ -10,9 +10,11 @@ sha256sums=(SKIP)
 
 package() {
   cd "${srcdir}/${pkgname}"
-  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x BUNDLE_PATH="${pkgdir}/opt/archpkgs/${pkgname}"
+  bundle config set --local path .bundle
   bundle install
+  cp -r "./.bundle" "${pkgdir}/opt/archpkgs/${pkgname}/.bundle/"
   cp "./${pkgname}.rb" "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh

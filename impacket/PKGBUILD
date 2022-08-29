@@ -10,19 +10,17 @@ sha256sums=(SKIP)
 
 package() {
   cd "${srcdir}/${pkgname}"
-  mkdir -p "${pkgdir}"/opt/archpkgs/{bin,lib} "${pkgdir}/opt/archpkgs/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
-  source "${pkgdir}/opt/archpkgs/${pkgname}/bin/activate"
+  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  pip freeze
   for binary in ./examples/*.py; do
     binname="$(basename "${binary%%.py}")"
     binname="${binname,,}"
     cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}"
 #!/bin/sh
 set -eu
-export VIRTUAL_ENV=/opt/archpkgs/${pkgname}
-export PATH=\$VIRTUAL_ENV/bin:\$PATH
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
 exec python /opt/archpkgs/${pkgname}/bin/$(basename "${binary}") "\$@"
 EOF
     chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}"

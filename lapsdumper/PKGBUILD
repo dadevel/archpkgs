@@ -1,9 +1,9 @@
-pkgname=certipy
+pkgname=lapsdumper
 pkgver=latest
 pkgrel=1
-url="https://github.com/ly4k/${pkgname}.git"
+url="https://github.com/n00py/${pkgname}.git"
 arch=(any)
-license=(MIT)
+license=(GPL3)
 depends=(python)
 source=("git+${url}")
 sha256sums=(SKIP)
@@ -12,18 +12,19 @@ package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  cp ./laps.py "${pkgdir}/opt/archpkgs/${pkgname}/bin"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install .
+  pip install ldap3
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/${pkgname} "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/laps.py "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
   cd "${srcdir}/${pkgname}"
-  git describe --long --tags | sed 's|-|_|g'
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
