@@ -2,6 +2,9 @@ name: CI
 permissions:
   contents: write
 on:
+  push:
+    branches:
+    - main
   schedule:
   - cron: 0 3 * * *
 jobs:
