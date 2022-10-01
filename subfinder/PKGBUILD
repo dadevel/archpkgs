@@ -1,0 +1,25 @@
+pkgname=subfinder
+pkgver=latest
+pkgrel=1
+url="https://github.com/projectdiscovery/${pkgname}.git"
+arch=(any)
+license=(MIT)
+makedepends=(git go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+  cd "${srcdir}/${pkgname}/v2/cmd/subfinder"
+  go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags '-s -w' -o "${pkgname}" .
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin"
+  install -Dm 755 "./v2/cmd/subfinder/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  git describe --long --tags | sed 's|-|_|g'
+}
