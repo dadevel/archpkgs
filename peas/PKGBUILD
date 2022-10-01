@@ -1,0 +1,31 @@
+pkgname=peas
+pkgver=latest
+pkgrel=1
+url="https://github.com/snovvcrash/${pkgname}.git"
+arch=(any)
+license=(unknown)
+depends=()
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+#!/bin/sh
+set -eu
+if podman version > /dev/null 2>&1; then
+    exec podman run -it --rm --network host --userns keep-id -v .:/workdir ghcr.io/dadevel/peas:latest "\$@"
+elif docker version > /dev/null 2>&1; then
+    exec docker run -it --rm --network host -v "\$PWD:/workdir" ghcr.io/dadevel/peas:latest "\$@"
+else
+    echo 'no container engine was found, please install docker or podman'
+fi
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
