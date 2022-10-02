@@ -1,7 +1,5 @@
 # archpkgs
 
-> **Work in progres** ⚠️
-
 Run the following commands as root to add the repository to your system.
 
 ~~~ bash
@@ -15,7 +13,7 @@ pacman -Sl archpkgs
 ~~~
 
 All packages are installed under `/opt/archpkgs` to avoid conflicts.
-Add `export "PATH=/opt/archpkgs/bin:$PATH"` to your shell profile for easy access.
+For easy access add `export "PATH=/opt/archpkgs/bin:$PATH"` to your shell profile and prepend `/opt/archpkgs/bin` to the `secure_path` option in `/etc/sudoers`.
 
 ## Development
 
