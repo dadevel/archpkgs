@@ -1,13 +1,15 @@
-#!/usr/bin/env bash
-
-docker run -i --rm -v "$PWD":/build localhost/archpkgs-builder << EOF
-set -eu
+#!/bin/sh
+exec docker run -i --rm -v "$PWD:/build" ghcr.io/dadevel/archpkgs-builder:latest bash << EOF
+set -euv
 shopt -s nullglob
 
-rm -rf ./repo
-mkdir ./repo
-cp ./index.html ./repo
-mv ./*/*.pkg.tar.zst ./*/*.pkg.tar.zst.sig ./repo
-cd ./repo
+cd /build
+rm -rf ./public
+mkdir ./public
+cp ./index.html ./public
+ls -lA ./artifacts
+mv ./artifacts/*/*.pkg.tar.zst ./artifacts/*/*.pkg.tar.zst.sig ./public
+cd ./public
+ls -lA
 repo-add ./archpkgs.db.tar.gz ./*.pkg.tar.zst
 EOF
