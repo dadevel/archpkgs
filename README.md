@@ -1,5 +1,16 @@
 # archpkgs
 
+> Red teaming and pentesting tools packaged for Arch Linux.
+
+Remarks:
+
+- packages are installed under `/opt/archpkgs`
+- Python packages are installed into their own virtual environment
+- packages are rebuild weekly
+- for now packages are unsigned
+
+## Setup
+
 Run the following commands as root to add the repository to your system.
 
 ~~~ bash
@@ -12,17 +23,16 @@ pacman -Sy
 pacman -Sl archpkgs
 ~~~
 
-All packages are installed under `/opt/archpkgs` to avoid conflicts.
-For easy access add `export "PATH=/opt/archpkgs/bin:$PATH"` to your shell profile and prepend `/opt/archpkgs/bin` to the `secure_path` option in `/etc/sudoers`.
-
-## Development
-
-Rebuild and install all packages.
+Prepend `/opt/archpkgs/bin` to the `$PATH`.
+For Bash append the following line to your shell profile in `~/.bashrc`:
 
 ~~~ bash
-docker build -t localhost/archpkgs-builder .
-rm ./*/*.pkg.tar.zst
-./build-pkgs.sh
-ls ./*/*.pkg.tar.zst
-sudo pacman -U ./*/*.pkg.tar.zst
+export "PATH=/opt/archpkgs/bin:$PATH"
+~~~
+
+Then add `/opt/archpkgs/bin` to the `secure_path` option of `sudo`.
+`/etc/sudoers` should contain a line similar to this:
+
+~~~
+Defaults secure_path="/opt/archpkgs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ~~~
