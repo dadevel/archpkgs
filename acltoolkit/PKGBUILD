@@ -1,7 +1,7 @@
 pkgname=acltoolkit
 pkgver=latest
 pkgrel=1
-url="https://github.com/dadevel/${pkgname}.git"
+url="https://github.com/zblurx/${pkgname}.git"
 arch=(any)
 license=()
 depends=(python)
