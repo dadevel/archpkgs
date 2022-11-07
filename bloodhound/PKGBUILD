@@ -11,6 +11,7 @@ sha256sums=(SKIP)
 
 build() {
   cd "${srcdir}/${pkgname}"
+  declare -x NODE_OPTIONS='--openssl-legacy-provider'
   npm install
   npm run build
 }
@@ -19,13 +20,13 @@ package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   cp -r ./BloodHound-linux-x64/. "${pkgdir}/opt/archpkgs/${pkgname}/"
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/bloodhound"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 cd /opt/archpkgs/${pkgname}
 exec ./BloodHound
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/bloodhound"
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {

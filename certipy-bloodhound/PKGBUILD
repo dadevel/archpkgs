@@ -11,6 +11,7 @@ sha256sums=(SKIP)
 
 build() {
   cd "${srcdir}/bloodhound"
+  declare -x NODE_OPTIONS='--openssl-legacy-provider'
   npm install
   npm run build
 }
