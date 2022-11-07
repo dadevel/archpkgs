@@ -45,6 +45,7 @@ jobs:
     - package-krbrelayx
     - package-lapsdumper
     - package-manspider
+    - package-mapcidr
     - package-max
     - package-mitm6
     - package-name-that-hash
@@ -453,6 +454,24 @@ jobs:
       with:
         name: package-manspider
         path: ./manspider/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-mapcidr:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh mapcidr
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-mapcidr
+        path: ./mapcidr/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-max:
