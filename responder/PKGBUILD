@@ -13,6 +13,7 @@ package() {
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+  pip install -r ./requirements.txt
   cp -r . "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
@@ -21,6 +22,15 @@ export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} 
 exec python /opt/archpkgs/${pkgname}/Responder.py "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}-dumphash"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+# script loads Responder.db from current workdir
+cd /opt/archpkgs/${pkgname}
+exec python ./DumpHash.py "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}-dumphash"
 }
 
 pkgver() {
