@@ -5,6 +5,7 @@ url="https://github.com/byt3bl33d3r/${pkgname}.git"
 arch=(any)
 license=(BSD2)
 depends=(python)
+makedepends=(rust)
 source=("git+${url}")
 sha256sums=(SKIP)
 
