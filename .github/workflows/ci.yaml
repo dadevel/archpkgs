@@ -27,6 +27,7 @@ jobs:
     - package-acltoolkit
     - package-adidnsdump
     - package-aquatone
+    - package-asnmap
     - package-azurehound
     - package-bloodhound
     - package-bloodhound-python
@@ -35,6 +36,7 @@ jobs:
     - package-coercer
     - package-crackmapexec
     - package-dfscoerce
+    - package-dnsx
     - package-evil-winrm
     - package-ffuf
     - package-gmsadumper
@@ -44,8 +46,10 @@ jobs:
     - package-kerbrute
     - package-krbrelayx
     - package-lapsdumper
+    - package-ldapnomnom
     - package-manspider
     - package-mapcidr
+    - package-massdns
     - package-max
     - package-mitm6
     - package-name-that-hash
@@ -56,7 +60,9 @@ jobs:
     - package-pypykatz
     - package-pywhisker
     - package-responder
+    - package-shuffledns
     - package-subfinder
+    - package-tlsx
     - package-trevorspray
     concurrency: ci-${{ github.ref }}
     steps:
@@ -130,6 +136,24 @@ jobs:
       with:
         name: package-aquatone
         path: ./aquatone/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-asnmap:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh asnmap
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-asnmap
+        path: ./asnmap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-azurehound:
@@ -274,6 +298,24 @@ jobs:
       with:
         name: package-dfscoerce
         path: ./dfscoerce/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-dnsx:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh dnsx
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-dnsx
+        path: ./dnsx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-evil-winrm:
@@ -438,6 +480,24 @@ jobs:
         path: ./lapsdumper/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-ldapnomnom:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh ldapnomnom
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-ldapnomnom
+        path: ./ldapnomnom/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-manspider:
     runs-on: ubuntu-20.04
     needs:
@@ -472,6 +532,24 @@ jobs:
       with:
         name: package-mapcidr
         path: ./mapcidr/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-massdns:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh massdns
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-massdns
+        path: ./massdns/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-max:
@@ -654,6 +732,24 @@ jobs:
         path: ./responder/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-shuffledns:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh shuffledns
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-shuffledns
+        path: ./shuffledns/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-subfinder:
     runs-on: ubuntu-20.04
     needs:
@@ -670,6 +766,24 @@ jobs:
       with:
         name: package-subfinder
         path: ./subfinder/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-tlsx:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh tlsx
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-tlsx
+        path: ./tlsx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-trevorspray:
