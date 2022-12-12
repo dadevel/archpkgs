@@ -1,5 +1,5 @@
 pkgname=coercer
-pkgver=1.6_3_ga026455
+pkgver=latest
 pkgrel=1
 url="https://github.com/p0dalirius/${pkgname}.git"
 arch=(any)
@@ -14,6 +14,7 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
+  pip install -r ./requirements.txt
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
