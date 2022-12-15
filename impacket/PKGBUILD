@@ -1,7 +1,8 @@
 pkgname=impacket
 pkgver=latest
 pkgrel=1
-url="https://github.com/secureauthcorp/${pkgname}.git"
+# this fork merges PRs much faster than https://github.com/fortra/impacket
+url="https://github.com/theporgs/${pkgname}.git"
 arch=(any)
 license=(Apache)
 depends=(python)
@@ -29,5 +30,5 @@ EOF
 
 pkgver() {
   cd "${srcdir}/${pkgname}"
-  git describe --long --tags | sed 's|impacket_||;s|_|.|g;s|-|_|g' 
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
