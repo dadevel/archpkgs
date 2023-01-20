@@ -36,3 +36,12 @@ Then add `/opt/archpkgs/bin` to the `secure_path` option of `sudo`.
 ~~~
 Defaults secure_path="/opt/archpkgs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ~~~
+
+## Development
+
+Build package in container.
+
+~~~ bash
+podman pull ghcr.io/dadevel/archpkgs-builder:latest
+podman run -it --rm -v ./$pkg:/build ghcr.io/dadevel/archpkgs-builder:latest makepkg -scf --noconfirm
+~~~~
