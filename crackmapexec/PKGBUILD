@@ -5,7 +5,7 @@ url="https://github.com/byt3bl33d3r/${pkgname}.git"
 arch=(any)
 license=(BSD2)
 depends=(python)
-makedepends=(rust)
+makedepends=(rust python-wheel)
 source=("git+${url}")
 sha256sums=(SKIP)
 
@@ -15,13 +15,15 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+  for binname in "${pkgname}" cmedb; do
+    cat << EOF > "${pkgdir}/opt/archpkgs/bin/${binname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/${pkgname} "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/${binname} "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    chmod +x "${pkgdir}/opt/archpkgs/bin/${binname}"
+  done
 }
 
 pkgver() {
