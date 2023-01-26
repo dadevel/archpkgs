@@ -18,6 +18,7 @@ package() {
   for binary in ./examples/*.py; do
     binname="$(basename "${binary%%.py}")"
     binname="${binname,,}"
+    binname="${binname//_/-/}"
     cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}-${binname}"
 #!/bin/sh
 set -eu
