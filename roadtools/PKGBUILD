@@ -1,0 +1,43 @@
+pkgname=roadtools
+pkgver=1
+pkgrel=1
+url="https://github.com/dirkjanm/${pkgname}.git"
+arch=(any)
+license=(MIT)
+depends=(python)
+makedepends=(git npm)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
+  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+  pushd ./roadrecon/frontend/
+  npm install
+  npm run build -- --configuration production
+  popd
+  pip install ./roadlib/
+  pip install ./roadrecon/
+  pip install ./roadtx/
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/roadrecon"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/roadrecon "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/roadrecon"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/roadtx"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/roadtx "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/roadtx"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
