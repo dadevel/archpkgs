@@ -49,6 +49,7 @@ jobs:
     - package-ldapnomnom
     - package-manspider
     - package-mapcidr
+    - package-masscan
     - package-massdns
     - package-max
     - package-mitm6
@@ -60,6 +61,7 @@ jobs:
     - package-pypykatz
     - package-pywhisker
     - package-responder
+    - package-roadtools
     - package-shuffledns
     - package-subfinder
     - package-tlsx
@@ -534,6 +536,24 @@ jobs:
         path: ./mapcidr/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-masscan:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh masscan
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-masscan
+        path: ./masscan/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-massdns:
     runs-on: ubuntu-20.04
     needs:
@@ -730,6 +750,24 @@ jobs:
       with:
         name: package-responder
         path: ./responder/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-roadtools:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh roadtools
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-roadtools
+        path: ./roadtools/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-shuffledns:

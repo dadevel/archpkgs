@@ -1,0 +1,25 @@
+pkgname=masscan
+pkgver=latest
+pkgrel=1
+url="https://github.com/ivre/${pkgname}.git"
+arch=(any)
+license=(AGPL3)
+makedepends=(git)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin"
+  install -Dm 755 "./bin/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  git describe --long --tags | sed 's|-|_|g'
+}
