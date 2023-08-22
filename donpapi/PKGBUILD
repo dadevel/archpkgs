@@ -1,9 +1,9 @@
-pkgname=acltoolkit
+pkgname=donpapi
 pkgver=latest
 pkgrel=1
-url="https://github.com/zblurx/${pkgname}.git"
+url="https://github.com/login-securite/${pkgname}.git"
 arch=(any)
-license=(unknown)
+license=(GPL3)
 depends=(python)
 source=("git+${url}")
 sha256sums=(SKIP)
@@ -14,13 +14,13 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/acltoolkit"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/acltoolkit "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/DonPAPI "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/acltoolkit"
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {

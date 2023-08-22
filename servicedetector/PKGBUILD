@@ -1,7 +1,7 @@
-pkgname=acltoolkit
+pkgname=servicedetector
 pkgver=latest
 pkgrel=1
-url="https://github.com/zblurx/${pkgname}.git"
+url="https://github.com/tothi/${pkgname}.git"
 arch=(any)
 license=(unknown)
 depends=(python)
@@ -13,14 +13,15 @@ package() {
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install .
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/acltoolkit"
+  pip install impacket
+  cp ./serviceDetector.py ./conf/*.json "${pkgdir}/opt/archpkgs/${pkgname}"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/acltoolkit "\$@"
+exec python /opt/archpkgs/${pkgname}/serviceDetector.py -conf /opt/archpkgs/${pkgname}/edr.json "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/acltoolkit"
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
