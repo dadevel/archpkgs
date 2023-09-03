@@ -1,7 +1,7 @@
 pkgname=servicedetector
 pkgver=latest
 pkgrel=1
-url="https://github.com/tothi/${pkgname}.git"
+url="https://github.com/dadevel/${pkgname}.git"  # use fork until pr is merged
 arch=(any)
 license=(unknown)
 depends=(python)
