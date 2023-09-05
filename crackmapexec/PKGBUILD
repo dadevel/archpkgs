@@ -1,7 +1,7 @@
 pkgname=crackmapexec
 pkgver=latest
 pkgrel=1
-url="https://github.com/mpgn/${pkgname}.git"
+url="https://github.com/porchetta-industries/${pkgname}.git"
 arch=(any)
 license=(BSD2)
 depends=(python)
