@@ -26,5 +26,5 @@ EOF
 
 pkgver() {
   cd "${srcdir}/${_reponame}"
-  git describe --long --tags | sed 's|-|_|g'
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
