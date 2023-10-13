@@ -1,0 +1,33 @@
+pkgname=roadtools-hybrid
+pkgver=latest
+pkgrel=1
+url=https://github.com/dirkjanm/roadtools_hybrid.git
+arch=(any)
+license=(unknown)
+depends=(python)
+makedepends=(git)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+  cd "${srcdir}/roadtools_hybrid"
+  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
+  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+  pip install -r ./requirements.txt
+  cp ./*.py "${pkgdir}/opt/archpkgs/${pkgname}/"
+  for binary in ./*.py; do
+    cat << EOF > "${pkgdir}/opt/archpkgs/bin/roadtools-$(basename "${binary%%.py}")"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/$(basename "${binary}") "\$@"
+EOF
+    chmod +x "${pkgdir}/opt/archpkgs/bin/roadtools-$(basename "${binary%%.py}")"
+  done
+}
+
+pkgver() {
+  cd "${srcdir}/roadtools_hybrid"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
