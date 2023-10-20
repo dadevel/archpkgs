@@ -9,14 +9,14 @@ source=("git+${url}")
 sha256sums=(SKIP)
 
 build() {
-  cd "${srcdir}/${pkgname}/v2/cmd/nuclei"
+  cd "${srcdir}/${pkgname}/cmd/nuclei"
   go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags '-s -w' -o "${pkgname}" .
 }
 
 package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}/opt/archpkgs/bin"
-  install -Dm 755 "./v2/cmd/nuclei/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+  install -Dm 755 "./cmd/nuclei/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
