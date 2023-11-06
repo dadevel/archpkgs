@@ -48,12 +48,14 @@ jobs:
     - package-krbrelayx
     - package-lapsdumper
     - package-ldapnomnom
+    - package-legba
     - package-manspider
     - package-mapcidr
     - package-masscan
     - package-massdns
     - package-max
     - package-mitm6
+    - package-msldap
     - package-name-that-hash
     - package-nuclei
     - package-peas
@@ -64,6 +66,7 @@ jobs:
     - package-pywhisker
     - package-responder
     - package-roadtools
+    - package-roadtools-hybrid
     - package-servicedetector
     - package-shuffledns
     - package-subfinder
@@ -521,6 +524,24 @@ jobs:
         path: ./ldapnomnom/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-legba:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh legba
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-legba
+        path: ./legba/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-manspider:
     runs-on: ubuntu-20.04
     needs:
@@ -627,6 +648,24 @@ jobs:
       with:
         name: package-mitm6
         path: ./mitm6/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-msldap:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh msldap
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-msldap
+        path: ./msldap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-name-that-hash:
@@ -807,6 +846,24 @@ jobs:
       with:
         name: package-roadtools
         path: ./roadtools/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-roadtools-hybrid:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh roadtools-hybrid
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-roadtools-hybrid
+        path: ./roadtools-hybrid/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-servicedetector:
