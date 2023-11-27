@@ -1,7 +1,7 @@
-pkgname=crackmapexec
+pkgname=netexec
 pkgver=latest
 pkgrel=1
-url="https://github.com/porchetta-industries/${pkgname}.git"
+url="https://github.com/pennyw0rth/${pkgname}.git"
 arch=(any)
 license=(BSD2)
 depends=(python)
@@ -15,7 +15,7 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  for binname in "${pkgname}" cmedb; do
+  for binname in "${pkgname}" nxcdb; do
     cat << EOF > "${pkgdir}/opt/archpkgs/bin/${binname}"
 #!/bin/sh
 set -eu
