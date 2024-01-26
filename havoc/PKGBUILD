@@ -1,0 +1,47 @@
+pkgname=havoc
+pkgver=latest
+pkgrel=1
+url="https://github.com/havocframework/${pkgname}.git"
+arch=(any)
+license=(GPL3)
+depends=(boost-libs bzip2 fontconfig gdbm glu libffi mesa mingw-w64-gcc nasm ncurses openssl python3 qt5-base qt5-websockets readline sqlite)
+makedepends=(boost boost-libs bzip2 cmake fontconfig gcc gdbm git glu go libffi make mesa mingw-w64-gcc nasm ncurses openssl python3 qt5-base qt5-websockets readline spdlog sqlite wget)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+
+  # make ts-build
+  pushd ./teamserver
+  GO111MODULE=on go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc ./main.go
+  popd
+
+  # make client-build
+  git submodule update --init --recursive
+  rm -rf ./modules
+  git clone --depth 1  --single-branch --branch main https://github.com/havocframework/modules.git
+  rm -rf ./client/Build
+  mkdir ./client/Build
+  pushd ./client/Build
+  cmake ..
+  popd
+  cmake --build ./client/Build -- -j $(nproc)
+  rm -rf ./client/src ./client/Build
+
+  cp -r ./assets/ ./client/ ./data/ ./modules/ ./payloads/ ./profiles/ ./havoc "${pkgdir}/opt/archpkgs/${pkgname}"
+
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+#!/bin/sh
+set -eu
+cd /opt/archpkgs/${pkgname}/
+exec /opt/archpkgs/${pkgname}/${pkgname} "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
