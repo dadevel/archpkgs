@@ -34,6 +34,7 @@ jobs:
     - package-certipy
     - package-certipy-bloodhound
     - package-coercer
+    - package-cvemap
     - package-dnsx
     - package-donpapi
     - package-evil-winrm
@@ -41,6 +42,7 @@ jobs:
     - package-gmsadumper
     - package-gobuster
     - package-gowitness
+    - package-havoc
     - package-httpx
     - package-impacket
     - package-kerbrute
@@ -67,6 +69,7 @@ jobs:
     - package-responder
     - package-roadtools
     - package-roadtools-hybrid
+    - package-sccmhunter
     - package-servicedetector
     - package-shuffledns
     - package-subfinder
@@ -272,6 +275,24 @@ jobs:
         path: ./coercer/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-cvemap:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh cvemap
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-cvemap
+        path: ./cvemap/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-dnsx:
     runs-on: ubuntu-20.04
     needs:
@@ -398,6 +419,24 @@ jobs:
         path: ./gowitness/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-havoc:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh havoc
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-havoc
+        path: ./havoc/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-httpx:
     runs-on: ubuntu-20.04
     needs:
@@ -506,24 +545,24 @@ jobs:
         path: ./ldapnomnom/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
-  #package-legba:
-  #  runs-on: ubuntu-20.04
-  #  needs:
-  #  - build-container
-  #  steps:
-  #  - name: Checkout
-  #    uses: actions/checkout@v3
-  #    with:
-  #      fetch-depth: 0
-  #  - name: Build package
-  #    run: ./build-package.sh legba
-  #  - name: Upload package
-  #    uses: actions/upload-artifact@v3
-  #    with:
-  #      name: package-legba
-  #      path: ./legba/*.pkg.tar.zst
-  #      retention-days: 1
-  #      if-no-files-found: error
+  package-legba:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh legba
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-legba
+        path: ./legba/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-manspider:
     runs-on: ubuntu-20.04
     needs:
@@ -864,6 +903,24 @@ jobs:
       with:
         name: package-roadtools-hybrid
         path: ./roadtools-hybrid/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-sccmhunter:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh sccmhunter
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-sccmhunter
+        path: ./sccmhunter/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-servicedetector:
