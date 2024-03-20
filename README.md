@@ -5,22 +5,26 @@
 Remarks:
 
 - packages are installed under `/opt/archpkgs`
-- Python packages are installed into their own virtual environment
+- Python packages are isolated in their own virtual environments
 - packages are rebuild weekly
 - for now packages are unsigned
 
 ## Setup
 
-Run the following commands as root to add the repository to your system.
+To add the repository to your system edit `/etc/pacman.conf` and insert the `[archpkgs]` section between `[core]` and `[extra]`.
 
-~~~ bash
-cat << EOF >> /etc/pacman.conf
+~~~ ini
+...
+[core]
+Include = /etc/pacman.d/mirrorlist
+
 [archpkgs]
 SigLevel = Optional TrustAll
 Server = https://dadevel.github.io/archpkgs
-EOF
-pacman -Sy
-pacman -Sl archpkgs
+
+[extra]
+Include = /etc/pacman.d/mirrorlist
+...
 ~~~
 
 Prepend `/opt/archpkgs/bin` to the `$PATH`.
@@ -37,11 +41,43 @@ Then add `/opt/archpkgs/bin` to the `secure_path` option of `sudo`.
 Defaults secure_path="/opt/archpkgs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ~~~
 
-## Development
-
-Build package in container.
+Finally run the following commands and start installing packages.
 
 ~~~ bash
-podman pull ghcr.io/dadevel/archpkgs-builder:latest
-podman run -it --rm -v ./$pkg:/build ghcr.io/dadevel/archpkgs-builder:latest makepkg -scf --noconfirm
-~~~~
+sudo pacman -Sy && sudo pacman -Sl archpkgs
+~~~
+
+## Development
+
+1. Create a new directory named like the package.
+
+    ~~~ bash
+    mkdir ./example
+    ~~~
+
+2. Place a [PKGBUILD](https://wiki.archlinux.org/title/PKGBUILD) in the newly created directory that describes how the package is built.
+
+    ~~~ bash
+    vim ./example/PKGBUILD
+    ~~~
+
+3. Update the build container.
+
+    ~~~ bash
+    podman pull ghcr.io/dadevel/archpkgs-builder:latest
+    ~~~
+
+4. Build the package.
+
+    ~~~ bash
+    podman run -it --rm -v ./example:/build ghcr.io/dadevel/archpkgs-builder:latest makepkg -scf --noconfirm
+    ~~~~
+
+5. Install the package and verify everything is on order.
+
+    ~~~ bash
+    sudo pacman -U ./example/example-1234.5678900-1-any.pkg.tar.zst
+    ~~~
+
+6. Run [generate-workflow.py](./generate-workflow.py) to update the CI pipeline.
+7. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
