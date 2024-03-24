@@ -1,0 +1,27 @@
+pkgname=spk
+pkgver=latest
+pkgrel=1
+url="https://github.com/dhn/${pkgname}.git"
+arch=(any)
+license=(BSD)
+depends=()
+makedepends=(go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    go mod tidy
+    make build
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin"
+    install -Dm 755 "./${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
