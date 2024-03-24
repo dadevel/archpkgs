@@ -1,0 +1,32 @@
+pkgname=defaultcreds-cheat-sheet
+pkgver=latest
+pkgrel=1
+url="https://github.com/ihebski/${pkgname}.git"
+arch=(any)
+license=(MIT)
+depends=(python)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
+    python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+    declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+    pip install .
+    python3 creds update
+    chmod 666 ./DefaultCreds_db.json
+    mv ./DefaultCreds_db.json ${pkgdir}/opt/archpkgs/${pkgname}/bin/
+    cat << EOF > "${pkgdir}/opt/archpkgs/bin/defaultcreds"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/creds "\$@"
+EOF
+    chmod +x "${pkgdir}/opt/archpkgs/bin/defaultcreds"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
