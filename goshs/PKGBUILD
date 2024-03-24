@@ -1,0 +1,29 @@
+pkgname=goshs
+pkgver=latest
+pkgrel=1
+url="https://github.com/patrickhener/${pkgname}.git"
+arch=(any)
+license=(MIT)
+depends=()
+makedepends=(npm go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+	cd "${srcdir}/${pkgname}"
+	npm install uglify-js sass
+	sed -i -e 's/@sass/@npx sass/' -e 's/@uglifyjs/@npx uglifyjs/' -e 's/clean generate security/clean generate/' -e 's/@GOOS=windows/# &/' -e 's/@GOOS=darwin/# &/' -e 's/@GOOS=linux GOARCH=arm/# &/' -e 's/@GOOS=linux GOARCH=386/# &/' Makefile
+	go mod tidy
+	make build
+}
+
+package() {
+	cd "${srcdir}/${pkgname}/dist/linux_amd64/"
+	mkdir -p "${pkgdir}/opt/archpkgs/bin"
+	install -Dm 755 "./${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+	cd "${srcdir}/${pkgname}"
+	echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
