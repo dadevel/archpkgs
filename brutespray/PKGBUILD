@@ -1,0 +1,26 @@
+pkgname=brutespray
+pkgver=latest
+pkgrel=1
+url="https://github.com/x90skysn3k/${pkgname}.git"
+arch=(any)
+license=(MIT)
+depends=()
+makedepends=(git go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    go build -o "${pkgname}" ./main.go
+}
+
+package() {
+    cd "${srcdir}/${pkgname}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin"
+    install -Dm 755 "./main" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
