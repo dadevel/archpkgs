@@ -1,4 +1,4 @@
-pkgname='ike-scan'
+pkgname=ike-scan
 pkgver=920.9df6145
 pkgrel=1
 url="https://github.com/royhills/${pkgname}.git"
@@ -9,21 +9,19 @@ source=("git+${url}")
 sha256sums=(SKIP)
 
 build() {
-	cd "${srcdir}/${pkgname}"
-	set -u
-	autoreconf --install
-	./configure --prefix='/usr' --mandir='/usr/share/man' --with-openssl
-	make -s
-	set +u
+    cd "${srcdir}/${pkgname}"
+    autoreconf --install
+    ./configure --prefix=/usr --mandir=/usr/share/man --with-openssl
+    make -s
 }
 
 package() {
-	mkdir -p "${pkgdir}/opt/archpkgs/bin" 
-	cd "${srcdir}/${pkgname}"
-	cp ike-scan psk-crack "${pkgdir}/opt/archpkgs/bin/"
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin"
+    cp ./ike-scan ./psk-crack "${pkgdir}/opt/archpkgs/bin/"
 }
 
 pkgver() {
-	cd "${srcdir}/${pkgname}"
-	echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
