@@ -1,5 +1,5 @@
 pkgname='ike-scan'
-pkgver=latest
+pkgver=920.9df6145
 pkgrel=1
 url="https://github.com/royhills/${pkgname}.git"
 arch=(any)
@@ -18,23 +18,9 @@ build() {
 }
 
 package() {
-	mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+	mkdir -p "${pkgdir}/opt/archpkgs/bin" 
 	cd "${srcdir}/${pkgname}"
-	cp ike-scan psk-crack "${pkgdir}/opt/archpkgs/${pkgname}"
-	cat <<EOF >"${pkgdir}/opt/archpkgs/bin/${pkgname}"
-#!/bin/sh
-set -eu
-cd /opt/archpkgs/${pkgname}/
-exec /opt/archpkgs/${pkgname}/${pkgname} "\$@"
-EOF
-	chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
-	cat <<EOF >"${pkgdir}/opt/archpkgs/bin/psk-crack"
-#!/bin/sh
-set -eu
-cd /opt/archpkgs/${pkgname}/
-exec /opt/archpkgs/${pkgname}/psk-crack "\$@"
-EOF
-	chmod +x "${pkgdir}/opt/archpkgs/bin/psk-crack"
+	cp ike-scan psk-crack "${pkgdir}/opt/archpkgs/bin/"
 }
 
 pkgver() {
