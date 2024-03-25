@@ -1,5 +1,5 @@
 pkgname='ike-scan'
-pkgver=920.9df6145
+pkgver=latest
 pkgrel=1
 url="https://github.com/royhills/${pkgname}.git"
 arch=(any)
