@@ -1,5 +1,5 @@
 pkgname=dnsrecon
-pkgver=637.333a391
+pkgver=latest
 pkgrel=1
 url="https://github.com/darkoperator/${pkgname}.git"
 arch=(any)
