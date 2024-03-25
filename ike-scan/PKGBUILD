@@ -1,0 +1,43 @@
+pkgname='ike-scan'
+pkgver=latest
+pkgrel=1
+url="https://github.com/royhills/${pkgname}.git"
+arch=(any)
+license=(GPL)
+depends=(openssl)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+	cd "${srcdir}/${pkgname}"
+	set -u
+	autoreconf --install
+	./configure --prefix='/usr' --mandir='/usr/share/man' --with-openssl
+	make -s
+	set +u
+}
+
+package() {
+	mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+	cd "${srcdir}/${pkgname}"
+	cp ike-scan psk-crack "${pkgdir}/opt/archpkgs/${pkgname}"
+	cat <<EOF >"${pkgdir}/opt/archpkgs/bin/${pkgname}"
+#!/bin/sh
+set -eu
+cd /opt/archpkgs/${pkgname}/
+exec /opt/archpkgs/${pkgname}/${pkgname} "\$@"
+EOF
+	chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+	cat <<EOF >"${pkgdir}/opt/archpkgs/bin/psk-crack"
+#!/bin/sh
+set -eu
+cd /opt/archpkgs/${pkgname}/
+exec /opt/archpkgs/${pkgname}/psk-crack "\$@"
+EOF
+	chmod +x "${pkgdir}/opt/archpkgs/bin/psk-crack"
+}
+
+pkgver() {
+	cd "${srcdir}/${pkgname}"
+	echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
