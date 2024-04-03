@@ -1,0 +1,27 @@
+pkgname=shortscan
+pkgver=latest
+pkgrel=1
+url="https://github.com/bitquark/${pkgname}.git"
+arch=(any)
+license=(MIT)
+depends=()
+makedepends=(go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    go build -o . ./...
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin"
+    install -Dm 755 "./${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    install -Dm 755 "./shortutil" "${pkgdir}/opt/archpkgs/bin/shortutil"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
