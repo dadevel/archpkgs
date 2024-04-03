@@ -31,13 +31,17 @@ jobs:
     - package-azurehound
     - package-bloodhound
     - package-bloodhound-python
+    - package-brutespray
     - package-certipy
     - package-certipy-bloodhound
     - package-coercer
     - package-cvemap
+    - package-defaultcreds-cheat-sheet
+    - package-dnsrecon
     - package-dnsx
     - package-donpapi
     - package-evil-winrm
+    - package-exrex
     - package-ffuf
     - package-getfgpp
     - package-gmsadumper
@@ -46,6 +50,8 @@ jobs:
     - package-gowitness
     - package-havoc
     - package-httpx
+    - package-ike-scan
+    - package-iker
     - package-impacket
     - package-kerbrute
     - package-krbrelayx
@@ -74,6 +80,7 @@ jobs:
     - package-sccmhunter
     - package-servicedetector
     - package-shuffledns
+    - package-spk
     - package-subfinder
     - package-tlsx
     - package-trevorspray
@@ -223,6 +230,24 @@ jobs:
         path: ./bloodhound-python/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-brutespray:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh brutespray
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-brutespray
+        path: ./brutespray/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-certipy:
     runs-on: ubuntu-20.04
     needs:
@@ -295,6 +320,42 @@ jobs:
         path: ./cvemap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-defaultcreds-cheat-sheet:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh defaultcreds-cheat-sheet
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-defaultcreds-cheat-sheet
+        path: ./defaultcreds-cheat-sheet/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-dnsrecon:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh dnsrecon
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-dnsrecon
+        path: ./dnsrecon/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-dnsx:
     runs-on: ubuntu-20.04
     needs:
@@ -347,6 +408,24 @@ jobs:
       with:
         name: package-evil-winrm
         path: ./evil-winrm/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-exrex:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh exrex
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-exrex
+        path: ./exrex/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-ffuf:
@@ -491,6 +570,42 @@ jobs:
       with:
         name: package-httpx
         path: ./httpx/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-ike-scan:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh ike-scan
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-ike-scan
+        path: ./ike-scan/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-iker:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh iker
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-iker
+        path: ./iker/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-impacket:
@@ -995,6 +1110,24 @@ jobs:
       with:
         name: package-shuffledns
         path: ./shuffledns/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-spk:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh spk
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-spk
+        path: ./spk/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-subfinder:
