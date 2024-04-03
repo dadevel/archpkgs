@@ -51,7 +51,6 @@ jobs:
     - package-krbrelayx
     - package-lapsdumper
     - package-ldapnomnom
-    # package-legba
     - package-manspider
     - package-mapcidr
     - package-masscan
@@ -584,24 +583,6 @@ jobs:
         path: ./ldapnomnom/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
-  #package-legba:
-  #  runs-on: ubuntu-20.04
-  #  needs:
-  #  - build-container
-  #  steps:
-  #  - name: Checkout
-  #    uses: actions/checkout@v3
-  #    with:
-  #      fetch-depth: 0
-  #  - name: Build package
-  #    run: ./build-package.sh legba
-  #  - name: Upload package
-  #    uses: actions/upload-artifact@v3
-  #    with:
-  #      name: package-legba
-  #      path: ./legba/*.pkg.tar.zst
-  #      retention-days: 1
-  #      if-no-files-found: error
   package-manspider:
     runs-on: ubuntu-20.04
     needs:
