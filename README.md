@@ -81,3 +81,7 @@ sudo pacman -Sy && sudo pacman -Sl archpkgs
 
 6. Run [generate-workflow.py](./generate-workflow.py) to update the CI pipeline.
 7. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
+
+## Tips
+
+If building Rust fails with a strange linker error, use `CFLAGS="${CFLAGS/-flto=auto/}" cargo build ...`.
