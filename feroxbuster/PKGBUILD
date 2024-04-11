@@ -1,0 +1,21 @@
+pkgname=feroxbuster
+pkgver=latest
+pkgrel=1
+url="https://github.com/epi052/${pkgname}.git"
+arch=(any)
+license=(MIT)
+makedepends=(rust)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+    CFLAGS="${CFLAGS/-flto=auto/}"  RUSTUP_TOOLCHAIN=stable cargo build --release --locked --all-features
+    cp ./target/release/feroxbuster "${pkgdir}"/opt/archpkgs/bin/
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
