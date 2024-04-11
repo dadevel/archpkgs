@@ -1,0 +1,22 @@
+pkgname=legba
+pkgver=latest
+pkgrel=1
+url="https://github.com/evilsocket/${pkgname}.git"
+arch=(any)
+license=(GPL3)
+depends=(openssl smbclient)
+makedepends=(cmake rust)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+    CFLAGS="${CFLAGS/-flto=auto/}" cargo build --release
+    cp ./target/release/legba "${pkgdir}"/opt/archpkgs/bin/
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
