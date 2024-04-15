@@ -35,6 +35,7 @@ jobs:
     - package-certipy
     - package-certipy-bloodhound
     - package-coercer
+    - package-credmaster
     - package-cvemap
     - package-defaultcreds-cheat-sheet
     - package-dnsrecon
@@ -305,6 +306,24 @@ jobs:
       with:
         name: package-coercer
         path: ./coercer/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-credmaster:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh credmaster
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-credmaster
+        path: ./credmaster/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-cvemap:
