@@ -49,38 +49,45 @@ sudo pacman -Sy && sudo pacman -Sl archpkgs
 
 ## Development
 
-1. Create a new directory named like the package.
+1. Clone the repo.
+
+    ~~~ bash
+    git clone --depth 1 https://github.com/dadevel/archpkgs.git
+    cd ./archpkgs
+    ~~~
+
+2. Create a new directory named like the package.
 
     ~~~ bash
     mkdir ./example
     ~~~
 
-2. Place a [PKGBUILD](https://wiki.archlinux.org/title/PKGBUILD) in the newly created directory that describes how the package is built.
+3. Place a [PKGBUILD](https://wiki.archlinux.org/title/PKGBUILD) in the newly created directory that describes how the package is built.
 
     ~~~ bash
     vim ./example/PKGBUILD
     ~~~
 
-3. Update the build container.
+4. Update the build container.
 
     ~~~ bash
     podman pull ghcr.io/dadevel/archpkgs-builder:latest
     ~~~
 
-4. Build the package.
+5. Build the package.
 
     ~~~ bash
     podman run -it --rm --userns keep-id --group-add wheel -v ./example:/build -w /build --entrypoint /bin/env ghcr.io/dadevel/archpkgs-builder:latest makepkg --syncdeps --clean --needed --noconfirm
     ~~~~
 
-5. Install the package and verify everything is on order.
+6. Install the package and verify everything is on order.
 
     ~~~ bash
     sudo pacman -U ./example/example-1234.5678900-1-any.pkg.tar.zst
     ~~~
 
-6. Run [generate-workflow.py](./generate-workflow.py) to update the CI pipeline.
-7. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
+7. Run `./generate-workflow.py` to update the CI pipeline.
+8. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
 
 ## Tips
 

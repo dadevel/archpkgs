@@ -10,11 +10,11 @@ sha256sums=(SKIP)
 
 package() {
   cd "${srcdir}/${pkgname}"
-  mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  pip install git+https://github.com/ly4k/ldap3  # required ldap channel binding support
+  pip install git+https://github.com/ly4k/ldap3  # required for ldap channel binding support
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
