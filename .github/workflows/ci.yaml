@@ -53,7 +53,8 @@ jobs:
     - package-httpx
     - package-ike-scan
     - package-iker
-    - package-impacket
+    - package-impacket-stable
+    - package-impacket-unstable
     - package-kerbrute
     - package-krbrelayx
     - package-lapsdumper
@@ -631,7 +632,7 @@ jobs:
         path: ./iker/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
-  package-impacket:
+  package-impacket-stable:
     runs-on: ubuntu-20.04
     needs:
     - build-container
@@ -641,12 +642,30 @@ jobs:
       with:
         fetch-depth: 0
     - name: Build package
-      run: ./build-package.sh impacket
+      run: ./build-package.sh impacket-stable
     - name: Upload package
       uses: actions/upload-artifact@v3
       with:
-        name: package-impacket
-        path: ./impacket/*.pkg.tar.zst
+        name: package-impacket-stable
+        path: ./impacket-stable/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-impacket-unstable:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Build package
+      run: ./build-package.sh impacket-unstable
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-impacket-unstable
+        path: ./impacket-unstable/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-kerbrute:
