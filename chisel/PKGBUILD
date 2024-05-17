@@ -1,0 +1,24 @@
+pkgname=chisel
+pkgver=latest
+pkgrel=1
+url="https://github.com/jpillora/${pkgname}.git"
+arch=(any)
+license=(MIT)
+makedepends=(git go)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    make linux
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    install -Dm 755 ./build/v*/*/bin/chisel-linux_amd64 "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
