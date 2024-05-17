@@ -1,15 +1,13 @@
-#!/bin/sh
-exec docker run -i --rm -v "$PWD:/build" ghcr.io/dadevel/archpkgs-builder:latest bash << EOF
-set -euv
-shopt -s nullglob
-
+#!/usr/bin/env bash
+exec docker run -i --rm -v "$PWD:/build" -e SIGNING_KEY ghcr.io/dadevel/archpkgs-builder:latest bash << EOF
+set -euo pipefail
 cd /build
-rm -rf ./public
+echo "$SIGNING_KEY" | gpg --import -
 mkdir ./public
-cp ./index.html ./public
-ls -lA ./artifacts
-mv ./artifacts/*/*.pkg.tar.zst ./artifacts/*/*.pkg.tar.zst.sig ./public
-cd ./public
-ls -lA
-repo-add ./archpkgs.db.tar.gz ./*.pkg.tar.zst
+mv ./artifacts/package-*/*.pkg.tar.zst ./public
+for pkg in ./public/*.pkg.tar.zst; do
+    gpg --detach-sign --output "\${pkg}.sig" --sign "\${pkg}"
+done
+repo-add ./public/archpkgs.db.tar.zst ./public/*.pkg.tar.zst
+echo 'Options +Indexes' > ./public/.htaccess
 EOF

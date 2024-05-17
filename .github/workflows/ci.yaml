@@ -10,19 +10,17 @@ permissions:
   - cron: 0 3 * * *
 jobs:
   build-container:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build and push container
       run: ./build-container.sh
       env:
         GITHUB_USER: dadevel
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  deploy-pages:
-    runs-on: ubuntu-20.04
+  deploy-repo:
+    runs-on: ubuntu-24.04
     needs:
     - package-acltoolkit
     - package-adidnsdump
@@ -96,1260 +94,1123 @@ jobs:
     concurrency: ci-${{ github.ref }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: ./artifacts
     - name: Create repository
       run: ./build-repo.sh
-    - name: Deploy pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
-        force_orphan: true
-        user_name: github-actions[bot]
-        user_email: github-actions[bot]@users.noreply.github.com
+      env:
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+    - name: Upload repository
+      run: 'sudo apt-get install --no-install-recommends -y rclone && rclone --copy-links
+        sync ./public hetzner:'
+      env:
+        RCLONE_CONFIG_HETZNER_TYPE: ftp
+        RCLONE_CONFIG_HETZNER_HOST: ${{ secrets.HETZNER_HOSTNAME }}
+        RCLONE_CONFIG_HETZNER_USER: ${{ secrets.HETZNER_USERNAME }}
+        RCLONE_CONFIG_HETZNER_PASS: ${{ secrets.HETZNER_PASSWORD }}
+        RCLONE_CONFIG_HETZNER_EXPLICIT_TLS: 'true'
   package-acltoolkit:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh acltoolkit
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-acltoolkit
         path: ./acltoolkit/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-adidnsdump:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh adidnsdump
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-adidnsdump
         path: ./adidnsdump/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-aquatone:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh aquatone
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-aquatone
         path: ./aquatone/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-asnmap:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh asnmap
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-asnmap
         path: ./asnmap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-azurehound:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh azurehound
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-azurehound
         path: ./azurehound/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-bloodhound:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh bloodhound
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-bloodhound
         path: ./bloodhound/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-bloodhound-python:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh bloodhound-python
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-bloodhound-python
         path: ./bloodhound-python/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-brutespray:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh brutespray
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-brutespray
         path: ./brutespray/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-certipy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh certipy
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-certipy
         path: ./certipy/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-certipy-bloodhound:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh certipy-bloodhound
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-certipy-bloodhound
         path: ./certipy-bloodhound/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-chisel:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh chisel
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-chisel
         path: ./chisel/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-coercer:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh coercer
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-coercer
         path: ./coercer/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-credmaster:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh credmaster
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-credmaster
         path: ./credmaster/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-cvemap:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh cvemap
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-cvemap
         path: ./cvemap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-defaultcreds-cheat-sheet:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh defaultcreds-cheat-sheet
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-defaultcreds-cheat-sheet
         path: ./defaultcreds-cheat-sheet/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-dnsrecon:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh dnsrecon
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-dnsrecon
         path: ./dnsrecon/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-dnsx:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh dnsx
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-dnsx
         path: ./dnsx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-donpapi:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh donpapi
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-donpapi
         path: ./donpapi/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-evil-winrm:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh evil-winrm
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-evil-winrm
         path: ./evil-winrm/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-exrex:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh exrex
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-exrex
         path: ./exrex/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-feroxbuster:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh feroxbuster
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-feroxbuster
         path: ./feroxbuster/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-ffuf:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh ffuf
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-ffuf
         path: ./ffuf/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-getfgpp:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh getfgpp
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-getfgpp
         path: ./getfgpp/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-gmsadumper:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh gmsadumper
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-gmsadumper
         path: ./gmsadumper/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-gobuster:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh gobuster
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-gobuster
         path: ./gobuster/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-goshs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh goshs
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-goshs
         path: ./goshs/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-gowitness:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh gowitness
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-gowitness
         path: ./gowitness/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-havoc:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh havoc
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-havoc
         path: ./havoc/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-httpx:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh httpx
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-httpx
         path: ./httpx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-ike-scan:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh ike-scan
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-ike-scan
         path: ./ike-scan/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-iker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh iker
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-iker
         path: ./iker/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-impacket-stable:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh impacket-stable
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-impacket-stable
         path: ./impacket-stable/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-impacket-unstable:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh impacket-unstable
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-impacket-unstable
         path: ./impacket-unstable/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-kerbrute:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh kerbrute
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-kerbrute
         path: ./kerbrute/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-krbrelayx:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh krbrelayx
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-krbrelayx
         path: ./krbrelayx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-lapsdumper:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh lapsdumper
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-lapsdumper
         path: ./lapsdumper/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-ldapnomnom:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh ldapnomnom
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-ldapnomnom
         path: ./ldapnomnom/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-manspider:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh manspider
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-manspider
         path: ./manspider/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-mapcidr:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh mapcidr
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-mapcidr
         path: ./mapcidr/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-masscan:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh masscan
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-masscan
         path: ./masscan/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-massdns:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh massdns
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-massdns
         path: ./massdns/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-max:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh max
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-max
         path: ./max/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-mitm6:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh mitm6
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-mitm6
         path: ./mitm6/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-msldap:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh msldap
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-msldap
         path: ./msldap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-name-that-hash:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh name-that-hash
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-name-that-hash
         path: ./name-that-hash/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-netexec:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh netexec
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-netexec
         path: ./netexec/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-nuclei:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh nuclei
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-nuclei
         path: ./nuclei/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-paru:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh paru
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-paru
         path: ./paru/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-peas:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh peas
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-peas
         path: ./peas/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-petitpotam:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh petitpotam
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-petitpotam
         path: ./petitpotam/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-pkinittools:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh pkinittools
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-pkinittools
         path: ./pkinittools/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-pretender:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh pretender
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-pretender
         path: ./pretender/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-prox-ez:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh prox-ez
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-prox-ez
         path: ./prox-ez/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-pypykatz:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh pypykatz
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-pypykatz
         path: ./pypykatz/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-pywhisker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh pywhisker
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-pywhisker
         path: ./pywhisker/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-responder:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh responder
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-responder
         path: ./responder/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-roadtools:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh roadtools
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-roadtools
         path: ./roadtools/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-roadtools-hybrid:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh roadtools-hybrid
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-roadtools-hybrid
         path: ./roadtools-hybrid/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-sccmhunter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh sccmhunter
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-sccmhunter
         path: ./sccmhunter/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-scrying:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh scrying
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-scrying
         path: ./scrying/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-servicedetector:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh servicedetector
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-servicedetector
         path: ./servicedetector/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-shortscan:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh shortscan
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-shortscan
         path: ./shortscan/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-shuffledns:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh shuffledns
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-shuffledns
         path: ./shuffledns/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-sliver:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh sliver
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-sliver
         path: ./sliver/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-spk:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh spk
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-spk
         path: ./spk/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-subfinder:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh subfinder
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-subfinder
         path: ./subfinder/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-tlsx:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh tlsx
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-tlsx
         path: ./tlsx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-trevorspray:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh trevorspray
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-trevorspray
         path: ./trevorspray/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-wg-netns:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v4
     - name: Build package
       run: ./build-package.sh wg-netns
     - name: Upload package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-wg-netns
         path: ./wg-netns/*.pkg.tar.zst

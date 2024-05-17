@@ -1,51 +1,28 @@
 # archpkgs
 
-> Red teaming and pentesting tools packaged for Arch Linux.
+Red teaming and pentesting tools packaged for Arch Linux.
 
 Remarks:
 
 - packages are installed under `/opt/archpkgs`
 - Python packages are isolated in their own virtual environments
 - packages are rebuild weekly
-- for now packages are unsigned
 
 ## Setup
 
-To add the repository to your system edit `/etc/pacman.conf` and insert the `[archpkgs]` section between `[core]` and `[extra]`.
-
-~~~ ini
-...
-[core]
-Include = /etc/pacman.d/mirrorlist
-
-[archpkgs]
-SigLevel = Optional TrustAll
-Server = https://dadevel.github.io/archpkgs
-
-[extra]
-Include = /etc/pacman.d/mirrorlist
-...
-~~~
-
-Prepend `/opt/archpkgs/bin` to the `$PATH`.
-For Bash append the following line to your shell profile in `~/.bashrc`:
+Run the following command to add the repo.
 
 ~~~ bash
-export "PATH=/opt/archpkgs/bin:$PATH"
+curl -sSfL https://github.com/dadevel/archpkgs/raw/main/setup.sh | sudo bash
 ~~~
 
-Then add `/opt/archpkgs/bin` to the `secure_path` option of `sudo`.
-`/etc/sudoers` should contain a line similar to this:
-
-~~~
-Defaults secure_path="/opt/archpkgs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-~~~
-
-Finally run the following commands and start installing packages.
+List all packages provided by the repo.
 
 ~~~ bash
-sudo pacman -Sy && sudo pacman -Sl archpkgs
+sudo pacman -Sl archpkgs
 ~~~
+
+> **Note:** Breaking changes that require manual interaction are marked in the [commit history](https://github.com/dadevel/archpkgs/commits/main/) with an `!`.
 
 ## Development
 

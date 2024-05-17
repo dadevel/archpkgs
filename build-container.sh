@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -euo pipefail
 
 docker login ghcr.io --username "$GITHUB_USER" --password-stdin <<< "$GITHUB_TOKEN"
 trap 'docker logout ghcr.io' EXIT

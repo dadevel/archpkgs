@@ -4,6 +4,8 @@ from typing import Any
 
 import yaml
 
+RUNNER_OS = 'ubuntu-24.04'
+
 
 def main() -> None:
     packages = [p.parent.name for p in sorted(Path.cwd().glob('*/PKGBUILD'))]
@@ -29,21 +31,18 @@ def generate_workflow(packages: list[str]) -> dict[str, Any]:
                 {'cron': '0 3 * * *'},
             ],
         },
-        'jobs': {'build-container': generate_setup_job(), 'deploy-pages': generate_deploy_job(packages)} | {f'package-{package}': generate_package_job(package) for package in packages},
+        'jobs': {'build-container': generate_setup_job(), 'deploy-repo': generate_deploy_job(packages)} | {f'package-{package}': generate_package_job(package) for package in packages},
     }
 
 
 def generate_package_job(package: str) -> dict[str, Any]:
     return {
-        'runs-on': 'ubuntu-20.04',
+        'runs-on': RUNNER_OS,
         'needs': ['build-container'],
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v3',
-                'with': {
-                    'fetch-depth': 0,
-                }
+                'uses': 'actions/checkout@v4',
             },
             {
                 'name': 'Build package',
@@ -51,7 +50,7 @@ def generate_package_job(package: str) -> dict[str, Any]:
             },
             {
                 'name': 'Upload package',
-                'uses': 'actions/upload-artifact@v3',
+                'uses': 'actions/upload-artifact@v4',
                 'with': {
                     'name': f'package-{package}',
                     'path': f'./{package}/*.pkg.tar.zst',
@@ -65,14 +64,11 @@ def generate_package_job(package: str) -> dict[str, Any]:
 
 def generate_setup_job() -> dict[str, Any]:
     return {
-        'runs-on': 'ubuntu-20.04',
+        'runs-on': RUNNER_OS,
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v3',
-                'with': {
-                    'fetch-depth': 0,
-                }
+                'uses': 'actions/checkout@v4',
             },
             {
                 'name': 'Build and push container',
@@ -88,20 +84,17 @@ def generate_setup_job() -> dict[str, Any]:
 
 def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
     return {
-        'runs-on': 'ubuntu-20.04',
+        'runs-on': RUNNER_OS,
         'needs': [f'package-{name}' for name in packages],
         'concurrency': 'ci-${{ github.ref }}',
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v3',
-                'with': {
-                    'fetch-depth': 0,
-                }
+                'uses': 'actions/checkout@v4',
             },
             {
                 'name': 'Download artifacts',
-                'uses': 'actions/download-artifact@v3',
+                'uses': 'actions/download-artifact@v4',
                 'with': {
                     'path': './artifacts',
                 }
@@ -109,17 +102,20 @@ def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
             {
                 'name': 'Create repository',
                 'run': './build-repo.sh',
+                'env': {
+                    'SIGNING_KEY': '${{ secrets.SIGNING_KEY }}',
+                },
             },
             {
-                'name': 'Deploy pages',
-                'uses': 'peaceiris/actions-gh-pages@v3',
-                'with': {
-                    'github_token': '${{ secrets.GITHUB_TOKEN }}',
-                    'publish_dir': './public',
-                    'force_orphan': True,  # dont keep history in gh-pages branch
-                    'user_name': 'github-actions[bot]',  # commit author
-                    'user_email': 'github-actions[bot]@users.noreply.github.com',
-                }
+                'name': 'Upload repository',
+                'run': 'sudo apt-get install --no-install-recommends -y rclone && rclone --copy-links sync ./public hetzner:',
+                'env': {
+                    'RCLONE_CONFIG_HETZNER_TYPE': 'ftp',
+                    'RCLONE_CONFIG_HETZNER_HOST': '${{ secrets.HETZNER_HOSTNAME }}',
+                    'RCLONE_CONFIG_HETZNER_USER': '${{ secrets.HETZNER_USERNAME }}',
+                    'RCLONE_CONFIG_HETZNER_PASS': '${{ secrets.HETZNER_PASSWORD }}',  # echo password | rclone obscure
+                    'RCLONE_CONFIG_HETZNER_EXPLICIT_TLS': 'true',
+                },
             },
         ],
     }
