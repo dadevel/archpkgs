@@ -1,0 +1,25 @@
+pkgname=sliver
+pkgver=latest
+pkgrel=1
+url="https://github.com/bishopfox/${pkgname}.git"
+arch=(any)
+license=(GPL3)
+makedepends=(curl git go sed tar unzip zip)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin"
+    install -Dm 755 ./sliver-server ./sliver-client "${pkgdir}/opt/archpkgs/bin"
+}
+
+pkgver() {
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
