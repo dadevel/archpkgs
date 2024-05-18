@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # add repo
-if ! grep -q '[archpkgs]' /etc/pacman.conf 2> /dev/null; then
+if ! grep -Fq '[archpkgs]' /etc/pacman.conf 2> /dev/null; then
     echo >> /etc/pacman.conf
     echo '[archpkgs]' >> /etc/pacman.conf
     echo 'Server = https://cdn.archpkgs.net' >> /etc/pacman.conf
