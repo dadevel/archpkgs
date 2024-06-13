@@ -19,7 +19,8 @@ version = "?"
 BANNER = "Certipy v{} - by Oliver Lyak (ly4k)\n".format(version)
 EOF
   pip install .
-  pip install git+https://github.com/ly4k/ldap3  # required for ldap channel binding support
+  pip install git+https://github.com/ly4k/ldap3@dev  # required for ldap channel binding support
+  pip install git+https://github.com/dadevel/impacket@latest
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
