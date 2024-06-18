@@ -1,7 +1,7 @@
 pkgname=impacket-stable
 pkgver=latest
 pkgrel=1
-url=https://github.com/fortra/impacket.git
+url=https://github.com/dadevel/impacket.git#branch=latest
 arch=(any)
 license=(Apache)
 depends=(python)
@@ -13,7 +13,6 @@ package() {
     mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
     python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
     declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-    sed -i 's|^pyOpenSSL>=21\.0\.0$|pyOpenSSL==24.0.0|' ./requirements.txt  # pin pyopenssl, see https://github.com/fortra/impacket/issues/1716
     pip install .
     for binary in ./examples/*.py; do
         binname="$(basename "${binary%%.py}")"
