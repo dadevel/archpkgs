@@ -1,5 +1,5 @@
 pkgname=roadtools
-pkgver=1
+pkgver=latest
 pkgrel=1
 url="https://github.com/dirkjanm/${pkgname}.git"
 arch=(any)
@@ -18,6 +18,7 @@ package() {
   npm install
   npm run build -- --configuration production
   popd
+  pip install setuptools  # for pkg_resources
   pip install ./roadlib/
   pip install ./roadrecon/
   pip install ./roadtx/

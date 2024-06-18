@@ -13,14 +13,10 @@ package() {
   mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  # work around dependency on deprecated pkg_resources
-  cat << 'EOF' > ./certipy/version.py
-version = "?"
-BANNER = "Certipy v{} - by Oliver Lyak (ly4k)\n".format(version)
-EOF
   pip install .
-  pip install git+https://github.com/ly4k/ldap3@dev  # required for ldap channel binding support
+  pip install setuptools  # for pkg_resources
   pip install git+https://github.com/dadevel/impacket@latest
+  pip install git+https://github.com/ly4k/ldap3@dev  # for ldap channel binding support
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
