@@ -12,15 +12,13 @@ sha256sums=(SKIP)
 build() {
     cd "${srcdir}/${pkgname}"
     npm install uglify-js sass
-    sed -i -e 's/@sass/@npx sass/' -e 's/@uglifyjs/@npx uglifyjs/' -e 's/clean generate security/clean generate/' -e 's/@GOOS=windows/# &/' -e 's/@GOOS=darwin/# &/' -e 's/@GOOS=linux GOARCH=arm/# &/' -e 's/@GOOS=linux GOARCH=386/# &/' Makefile
-    go mod tidy
-    make build
+    npx make build-linux
 }
 
 package() {
-    cd "${srcdir}/${pkgname}/dist/linux_amd64/"
+    cd "${srcdir}/${pkgname}"
     mkdir -p "${pkgdir}/opt/archpkgs/bin"
-    install -Dm 755 "./${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    install -Dm 755 "./dist/linux_amd64/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
