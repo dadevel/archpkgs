@@ -86,6 +86,7 @@ def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
     return {
         'runs-on': RUNNER_OS,
         'needs': [f'package-{name}' for name in packages],
+        'if': '${{ always() }}',
         'concurrency': 'ci-${{ github.ref }}',
         'steps': [
             {

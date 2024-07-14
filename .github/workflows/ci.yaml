@@ -90,7 +90,9 @@ jobs:
     - package-subfinder
     - package-tlsx
     - package-trevorspray
+    - package-typo3scan
     - package-wg-netns
+    if: ${{ always() }}
     concurrency: ci-${{ github.ref }}
     steps:
     - name: Checkout
@@ -1198,6 +1200,22 @@ jobs:
       with:
         name: package-trevorspray
         path: ./trevorspray/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-typo3scan:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh typo3scan
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-typo3scan
+        path: ./typo3scan/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-wg-netns:
