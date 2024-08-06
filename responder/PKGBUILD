@@ -16,6 +16,7 @@ package() {
   sed -i 's|^netifaces==0\.10\.4$|netifaces==0.10.5|' ./requirements.txt  # 0.10.4 fails to install
   pip install -r ./requirements.txt
   ./certs/gen-self-signed-cert.sh
+  sed -i -E 's|self\.RPCPort.*?=.*?$|self.RPCPort=45001|' ./settings.py
   cp -r . "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
