@@ -15,6 +15,7 @@ package() {
   cp ./*.py ./**/*.py "${pkgdir}/opt/archpkgs/${pkgname}/bin"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install -r ./requirements.txt
+  pip install setuptools  # for pkg_resources
   for binary in ./*.py ./**/*.py; do
     cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}-$(basename "${binary%%.py}")"
 #!/bin/sh
