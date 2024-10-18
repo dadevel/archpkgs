@@ -55,7 +55,6 @@ jobs:
     - package-iker
     - package-impacket-stable
     - package-impacket-unstable
-    - package-kerbrute
     - package-krbrelayx
     - package-lapsdumper
     - package-ldapnomnom
@@ -640,22 +639,6 @@ jobs:
       with:
         name: package-impacket-unstable
         path: ./impacket-unstable/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-kerbrute:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh kerbrute
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-kerbrute
-        path: ./kerbrute/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-krbrelayx:
