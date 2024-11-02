@@ -1,0 +1,26 @@
+pkgname=pulse-secure
+pkgver=latest
+pkgrel=1
+source=('https://dl.sva.de/pulsesecure/linux/ps-pulse-linux-22.7r1.0-b28369-64bit-installer.rpm' pulsesecure.service)
+sha256sums=('f335f1d72e8db6f6c984871c2380d37742fb3aec1736a7e61e3367dd5eb45e50' SKIP)
+arch=(x86_64)
+license=(custom)
+depends=(curl dbus dmidecode gcc-libs gtkmm3 libgnome-keyring libbsd openssl perl webkit2gtk)
+
+package() {
+    # directory /opt/pulsesecure is more or less hardcoded into the rpm
+
+    mkdir -p "${pkgdir}/opt/pulsesecure/"
+    cp -r ./opt/pulsesecure/. "${pkgdir}/opt/pulsesecure/"
+
+    mkdir -p "${pkgdir}/usr/share/dbus-1/system.d/"
+    ln -s /opt/pulsesecure/lib/JUNS/net.psecure.pulse.conf "${pkgdir}/usr/share/dbus-1/system.d/net.psecure.pulse.conf"
+
+    mkdir -p "${pkgdir}/usr/share/applications/"
+    ln -s /opt/pulsesecure/resource/pulse.desktop "${pkgdir}/usr/share/applications/pulsesecure.desktop"
+
+    install -D -m 644 ./pulsesecure.service "${pkgdir}/usr/lib/systemd/system/pulsesecure.service"
+
+    mkdir -p "${pkgdir}/etc/pki/ca-trust/extracted/openssl"
+    ln -sf /etc/ca-certificates/extracted/ca-bundle.trust.crt "${pkgdir}/etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt"
+}

@@ -74,6 +74,7 @@ jobs:
     - package-pkinittools
     - package-pretender
     - package-prox-ez
+    - package-pulse-secure
     - package-pypykatz
     - package-pywhisker
     - package-responder
@@ -943,6 +944,22 @@ jobs:
       with:
         name: package-prox-ez
         path: ./prox-ez/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-pulse-secure:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh pulse-secure
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-pulse-secure
+        path: ./pulse-secure/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-pypykatz:
