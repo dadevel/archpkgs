@@ -1,7 +1,7 @@
 pkgname=certipy
 pkgver=latest
 pkgrel=1
-url="https://github.com/ly4k/${pkgname}.git"
+url=https://github.com/zimedev/certipy-merged.git
 arch=(any)
 license=(MIT)
 depends=(python)
@@ -9,14 +9,14 @@ source=("git+${url}")
 sha256sums=(SKIP)
 
 package() {
-  cd "${srcdir}/${pkgname}"
+  cd "${srcdir}/certipy-merged"
   mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
   pip install setuptools  # for pkg_resources
   pip install git+https://github.com/dadevel/impacket@latest
-  pip install git+https://github.com/ly4k/ldap3@dev  # for ldap channel binding support
+  pip install git+https://github.com/dadevel/ldap3@latest  # for ldap channel binding support
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
@@ -27,6 +27,6 @@ EOF
 }
 
 pkgver() {
-  cd "${srcdir}/${pkgname}"
+  cd "${srcdir}/certipy-merged"
   echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
