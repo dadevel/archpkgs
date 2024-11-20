@@ -26,6 +26,7 @@ jobs:
     - package-adidnsdump
     - package-aquatone
     - package-asnmap
+    - package-atexec-pro
     - package-azurehound
     - package-bloodhound
     - package-bloodhound-python
@@ -57,6 +58,7 @@ jobs:
     - package-impacket-unstable
     - package-krbrelayx
     - package-lapsdumper
+    - package-ldap-shell
     - package-ldapnomnom
     - package-manspider
     - package-mapcidr
@@ -92,6 +94,7 @@ jobs:
     - package-trevorspray
     - package-typo3scan
     - package-wg-netns
+    - package-wmiexec-pro
     if: ${{ always() }}
     concurrency: ci-${{ github.ref }}
     steps:
@@ -176,6 +179,22 @@ jobs:
       with:
         name: package-asnmap
         path: ./asnmap/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-atexec-pro:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh atexec-pro
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-atexec-pro
+        path: ./atexec-pro/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-azurehound:
@@ -672,6 +691,22 @@ jobs:
       with:
         name: package-lapsdumper
         path: ./lapsdumper/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-ldap-shell:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh ldap-shell
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-ldap-shell
+        path: ./ldap-shell/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-ldapnomnom:
@@ -1232,5 +1267,21 @@ jobs:
       with:
         name: package-wg-netns
         path: ./wg-netns/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-wmiexec-pro:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh wmiexec-pro
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-wmiexec-pro
+        path: ./wmiexec-pro/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
