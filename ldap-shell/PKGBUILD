@@ -1,0 +1,30 @@
+pkgname=ldap-shell
+pkgver=latest
+pkgrel=1
+url=https://github.com/pshlyundin/ldap_shell.git
+arch=(any)
+license=(Apache)
+depends=(python)
+source=("git+${url}")
+sha256sums=(SKIP)
+
+package() {
+    cd "${srcdir}/ldap_shell"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+    python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+    declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+    pip install setuptools  # for pkg_resources
+    pip install .
+    cat <<EOF >"${pkgdir}/opt/archpkgs/bin/${pkgname}"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/ldap_shell "\$@"
+EOF
+    chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+}
+
+pkgver() {
+    cd "${srcdir}/ldap_shell"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
