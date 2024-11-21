@@ -1,7 +1,7 @@
 pkgname=atexec-pro
 pkgver=latest
 pkgrel=1
-url=https://github.com/ridter/atexec-pro.git
+url=https://github.com/glynx/atexec-pro.git
 arch=(any)
 depends=(python)
 source=("git+${url}")
