@@ -1,7 +1,7 @@
 pkgname=wmiexec-pro
 pkgver=latest
 pkgrel=1
-url=https://github.com/xiaolichan/wmiexec-pro.git
+url=https://github.com/glynx/wmiexec-pro.git
 arch=(any)
 depends=(python)
 source=("git+${url}")
