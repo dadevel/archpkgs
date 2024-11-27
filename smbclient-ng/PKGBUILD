@@ -1,9 +1,9 @@
-pkgname=sccmhunter
+pkgname=smbclient-ng
 pkgver=latest
 pkgrel=1
-url="https://github.com/garrettfoster13/${pkgname}.git"
+url="https://github.com/p0dalirius/${pkgname}.git"
 arch=(any)
-license=(MIT)
+license=(GPL3)
 depends=(python)
 source=("git+${url}")
 sha256sums=(SKIP)
@@ -12,15 +12,13 @@ package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
-  cp -r ./*.py ./lib/ "${pkgdir}/opt/archpkgs/${pkgname}/"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install -r ./requirements.txt
-  pip install git+https://github.com/dadevel/impacket@latest
+  pip install .
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/${pkgname}.py "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/smbclientng "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }

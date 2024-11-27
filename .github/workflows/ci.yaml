@@ -56,6 +56,7 @@ jobs:
     - package-iker
     - package-impacket-stable
     - package-impacket-unstable
+    - package-katana
     - package-krbrelayx
     - package-lapsdumper
     - package-ldap-shell
@@ -83,11 +84,13 @@ jobs:
     - package-roadtools
     - package-roadtools-hybrid
     - package-sccmhunter
+    - package-sccmsecrets
     - package-scrying
     - package-servicedetector
     - package-shortscan
     - package-shuffledns
     - package-sliver
+    - package-smbclient-ng
     - package-spk
     - package-subfinder
     - package-tlsx
@@ -661,6 +664,22 @@ jobs:
         path: ./impacket-unstable/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-katana:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh katana
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-katana
+        path: ./katana/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-krbrelayx:
     runs-on: ubuntu-24.04
     needs:
@@ -1093,6 +1112,22 @@ jobs:
         path: ./sccmhunter/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-sccmsecrets:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh sccmsecrets
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-sccmsecrets
+        path: ./sccmsecrets/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-scrying:
     runs-on: ubuntu-24.04
     needs:
@@ -1171,6 +1206,22 @@ jobs:
       with:
         name: package-sliver
         path: ./sliver/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-smbclient-ng:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh smbclient-ng
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-smbclient-ng
+        path: ./smbclient-ng/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-spk:
