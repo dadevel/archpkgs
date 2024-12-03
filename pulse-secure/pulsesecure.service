@@ -42,3 +42,6 @@ ProtectKernelTunables=yes
 RestrictNamespaces=yes
 RestrictRealtime=yes
 RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=multi-user.target
