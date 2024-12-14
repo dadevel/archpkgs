@@ -14,7 +14,7 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   cp ./fgpp.py "${pkgdir}/opt/archpkgs/${pkgname}/bin/"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install ldap3 python-dateutil
+  pip install git+https://github.com/dadevel/ldap3@latest python-dateutil
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu

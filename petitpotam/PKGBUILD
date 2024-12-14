@@ -14,7 +14,7 @@ package() {
     python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
     cp ./PetitPotam.py "${pkgdir}/opt/archpkgs/${pkgname}/${pkgname}.py"
     declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-    pip install impacket
+    pip install git+https://github.com/dadevel/impacket@latest
     cat <<EOF >"${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu

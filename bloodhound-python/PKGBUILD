@@ -2,7 +2,7 @@ pkgname=bloodhound-python
 _reponame=bloodhound.py
 pkgver=latest
 pkgrel=1
-url="https://github.com/dadevel/${_reponame}.git"
+url="https://github.com/dadevel/${_reponame}.git#branch=latest"
 arch=(any)
 license=(MIT)
 depends=(python)
