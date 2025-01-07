@@ -9,8 +9,8 @@ Restart=on-failure
 RestartSec=1
 TimeoutStopSec=3
 
-LogsDirectory=pulsesecure/pulse
-StateDirectory=pulsesecure/logging
+LogsDirectory=pulsesecure/logging
+StateDirectory=pulsesecure/pulse
 
 AmbientCapabilities=CAP_NET_ADMIN CAP_SYS_ADMIN
 CapabilityBoundingSet=CAP_NET_ADMIN CAP_SYS_ADMIN
