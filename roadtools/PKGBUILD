@@ -11,6 +11,7 @@ sha256sums=(SKIP)
 
 package() {
   cd "${srcdir}/${pkgname}"
+  sed -i "s|_parser.add_argument('-ua', '--user-agent', action='store',$|_parser.add_argument('-ua', '--user-agent', action='store', default='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.6822.61 Safari/537.36',|" ./roadrecon/roadtools/roadrecon/gather.py ./roadtx/roadtools/roadtx/main.py
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
