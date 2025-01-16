@@ -1,7 +1,7 @@
 pkgname=prox-ez
 pkgver=latest
 pkgrel=1
-url="https://github.com/synacktiv/${pkgname}.git"
+url="https://github.com/dadevel/${pkgname}.git"  # temporary fork for python 3.13 compatibility
 arch=(any)
 license=(unknown)
 depends=(python)
