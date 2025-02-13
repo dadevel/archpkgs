@@ -1,7 +1,7 @@
 pkgname=pypykatz
 pkgver=latest
 pkgrel=1
-url="https://github.com/dadevel/${pkgname}.git"
+url="https://github.com/skelsec/${pkgname}.git"
 arch=(any)
 license=(MIT)
 depends=(python)
