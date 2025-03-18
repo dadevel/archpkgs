@@ -13,6 +13,7 @@ package() {
     mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
     python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
     declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+    pip install -r ./requirements.txt
     pip install .
     for binary in ./examples/*.py; do
         binname="$(basename "${binary%%.py}")"
