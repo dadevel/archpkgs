@@ -1,5 +1,5 @@
 pkgname=evil-winrm
-pkgver=v3.4_0_g381b126
+pkgver=latest
 pkgrel=1
 url="https://github.com/hackplayers/${pkgname}.git"
 arch=(any)
@@ -11,14 +11,14 @@ sha256sums=(SKIP)
 package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
-  bundle install --path "${pkgdir}/opt/archpkgs/${pkgname}"
-  mv "${pkgdir}/opt/archpkgs/${pkgname}/ruby"/3.* "${pkgdir}/opt/archpkgs/${pkgname}/bundle"
-  rmdir "${pkgdir}/opt/archpkgs/${pkgname}/ruby"
-  cp "./${pkgname}.rb" "${pkgdir}/opt/archpkgs/${pkgname}"
+  declare -x GEM_HOME="${pkgdir}/opt/archpkgs/${pkgname}/bundle"
+  bundle install
+  gem install csv
+  cp "./${pkgname}.rb" "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
-export GEM_HOME=/opt/archpkgs/${pkgname}/bundle GEM_PATH=/opt/archpkgs/${pkgname}/bundle/gems
+export GEM_HOME=/opt/archpkgs/${pkgname}/bundle
 exec /opt/archpkgs/${pkgname}/${pkgname}.rb "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
