@@ -1,8 +1,8 @@
 pkgname=pulse-secure
 pkgver=latest
 pkgrel=1
-source=('https://dl.sva.de/pulsesecure/linux/ps-pulse-linux-22.8r1-b31437-installer.rpm' pulsesecure.service)
-sha256sums=('0830a91c6ea036bf429307d2f3d904dd94edb36d2e33bfbb5933cef73b51d2a1' SKIP)
+source=('https://dl.sva.de/pulsesecure/linux/pulsesecure_latest.rpm' pulsesecure.service)
+sha256sums=(SKIP SKIP)
 arch=(x86_64)
 license=(custom)
 depends=(curl dbus dmidecode gcc-libs gtkmm3 libgnome-keyring libbsd openssl perl webkit2gtk)
