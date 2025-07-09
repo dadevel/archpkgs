@@ -16,7 +16,7 @@ package() {
   pip install .
   pip install setuptools  # for pkg_resources
   pip install git+https://github.com/dadevel/impacket@latest
-  pip install git+https://github.com/dadevel/ldap3@latest  # for ldap channel binding support
+  pip install git+https://github.com/cannatag/ldap3@dev
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu

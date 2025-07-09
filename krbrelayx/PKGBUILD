@@ -13,7 +13,7 @@ package() {
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install dnspython dsinternals git+https://github.com/dadevel/impacket@latest git+https://github.com/dadevel/ldap3@latest
+  pip install dnspython dsinternals git+https://github.com/dadevel/impacket@latest git+https://github.com/cannatag/ldap3@dev
   pip install setuptools  # for pkg_resources
   cp -r ./*.py ./lib "${pkgdir}/opt/archpkgs/${pkgname}/"
   for binary in ./*.py; do

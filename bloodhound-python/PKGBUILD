@@ -16,7 +16,7 @@ package() {
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
   pip install git+https://github.com/dadevel/impacket@latest
-  pip install git+https://github.com/dadevel/ldap3@latest
+  pip install git+https://github.com/cannatag/ldap3@dev
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
