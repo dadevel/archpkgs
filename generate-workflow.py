@@ -109,7 +109,7 @@ def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
             },
             {
                 'name': 'Upload repository',
-                'run': 'sudo apt-get install --no-install-recommends -y rclone && rclone --copy-links sync ./public hetzner:',
+                'run': 'sudo apt-get update && sudo apt-get install --no-install-recommends -y rclone && rclone --copy-links sync ./public hetzner:',
                 'env': {
                     'RCLONE_CONFIG_HETZNER_TYPE': 'ftp',
                     'RCLONE_CONFIG_HETZNER_HOST': '${{ secrets.HETZNER_HOSTNAME }}',
