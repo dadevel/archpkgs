@@ -30,9 +30,11 @@ jobs:
     - package-azurehound
     - package-bloodhound
     - package-bloodhound-python
+    - package-bloodyad
     - package-brutespray
     - package-certipy
     - package-certipy-bloodhound
+    - package-certipy-merged
     - package-chisel
     - package-coercer
     - package-credmaster
@@ -47,7 +49,6 @@ jobs:
     - package-ffuf
     - package-getfgpp
     - package-gmsadumper
-    - package-gobuster
     - package-goshs
     - package-gowitness
     - package-havoc
@@ -79,6 +80,7 @@ jobs:
     - package-pretender
     - package-prox-ez
     - package-pulse-secure
+    - package-puredns
     - package-pypykatz
     - package-pywhisker
     - package-responder
@@ -97,6 +99,7 @@ jobs:
     - package-tlsx
     - package-trevorspray
     - package-typo3scan
+    - package-unfurl
     - package-wg-netns
     - package-wmiexec-pro
     if: ${{ always() }}
@@ -249,6 +252,22 @@ jobs:
         path: ./bloodhound-python/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-bloodyad:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh bloodyad
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-bloodyad
+        path: ./bloodyad/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-brutespray:
     runs-on: ubuntu-24.04
     needs:
@@ -295,6 +314,22 @@ jobs:
       with:
         name: package-certipy-bloodhound
         path: ./certipy-bloodhound/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-certipy-merged:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh certipy-merged
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-certipy-merged
+        path: ./certipy-merged/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-chisel:
@@ -519,22 +554,6 @@ jobs:
       with:
         name: package-gmsadumper
         path: ./gmsadumper/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-gobuster:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh gobuster
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-gobuster
-        path: ./gobuster/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-goshs:
@@ -1033,6 +1052,22 @@ jobs:
         path: ./pulse-secure/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-puredns:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh puredns
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-puredns
+        path: ./puredns/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-pypykatz:
     runs-on: ubuntu-24.04
     needs:
@@ -1319,6 +1354,22 @@ jobs:
       with:
         name: package-typo3scan
         path: ./typo3scan/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-unfurl:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh unfurl
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-unfurl
+        path: ./unfurl/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-wg-netns:
