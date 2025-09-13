@@ -66,7 +66,6 @@ jobs:
     - package-ldapnomnom
     - package-manspider
     - package-mapcidr
-    - package-masscan
     - package-massdns
     - package-max
     - package-mitm6
@@ -827,22 +826,6 @@ jobs:
       with:
         name: package-mapcidr
         path: ./mapcidr/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-masscan:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh masscan
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-masscan
-        path: ./masscan/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-massdns:
