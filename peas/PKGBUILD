@@ -1,31 +1,29 @@
 pkgname=peas
 pkgver=latest
 pkgrel=1
-url="https://github.com/snovvcrash/${pkgname}.git"
+url="https://github.com/glynx/${pkgname}.git"
 arch=(any)
 license=(unknown)
-depends=()
+depends=(python)
 source=("git+${url}")
 sha256sums=(SKIP)
 
 package() {
-  cd "${srcdir}/${pkgname}"
-  mkdir -p "${pkgdir}"/opt/archpkgs/bin
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    cd "${srcdir}/${pkgname}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+    python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+    declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+    pip install .
+    cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
-if podman version > /dev/null 2>&1; then
-    exec podman run -it --rm --network host --userns keep-id -v .:/workdir ghcr.io/dadevel/peas:latest "\$@"
-elif docker version > /dev/null 2>&1; then
-    exec docker run -it --rm --network host -v "\$PWD:/workdir" ghcr.io/dadevel/peas:latest "\$@"
-else
-    echo 'no container engine was found, please install docker or podman'
-fi
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/${pkgname} "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
-  cd "${srcdir}/${pkgname}"
-  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
