@@ -52,7 +52,6 @@ jobs:
     - package-gmsadumper
     - package-goshs
     - package-gowitness
-    - package-havoc
     - package-httpx
     - package-ike-scan
     - package-iker
@@ -602,22 +601,6 @@ jobs:
       with:
         name: package-gowitness
         path: ./gowitness/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-havoc:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh havoc
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-havoc
-        path: ./havoc/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-httpx:
