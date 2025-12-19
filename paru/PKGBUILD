@@ -14,6 +14,7 @@ sha256sums=(SKIP)
 
 prepare() {
   cd "${srcdir}/${pkgname}"
+  cargo update alpm alpm-utils
   cargo fetch --locked --target "$(rustc -vV | sed -n 's|host: ||p')"
 }
 
