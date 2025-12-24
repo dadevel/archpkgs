@@ -12,8 +12,8 @@ package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}"/opt/archpkgs/bin "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x GEM_HOME="${pkgdir}/opt/archpkgs/${pkgname}/bundle"
+  sed -i "/spec.add_development_dependency 'bundler',/d" ./evil-winrm.gemspec
   bundle install
-  gem install csv
   cp "./${pkgname}.rb" "${pkgdir}/opt/archpkgs/${pkgname}/"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
