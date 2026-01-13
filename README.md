@@ -54,7 +54,7 @@ sudo pacman -Sl archpkgs
 5. Build the package.
 
     ~~~ bash
-    podman run -it --rm --userns keep-id --group-add wheel -v ./example:/build -w /build --entrypoint /bin/env ghcr.io/dadevel/archpkgs-builder:latest makepkg --syncdeps --clean --needed --noconfirm
+    podman run --rm --userns keep-id -v ./example:/build ghcr.io/dadevel/archpkgs-builder:latest
     ~~~~
 
 6. Install the package and verify everything is on order.

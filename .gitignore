@@ -1,3 +1,4 @@
 /public/
 /rclone.conf
+.SRCINFO
 *.pkg.tar.zst
