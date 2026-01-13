@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
-exec docker run -i --rm -v "$PWD:/build" -e SIGNING_KEY ghcr.io/dadevel/archpkgs-builder:latest bash << EOF
-set -euo pipefail
-cd /build
-echo "$SIGNING_KEY" | gpg --import -
-mkdir ./public
-mv ./artifacts/package-*/*.pkg.tar.zst ./public
-for pkg in ./public/*.pkg.tar.zst; do
-    gpg --detach-sign --output "\${pkg}.sig" --sign "\${pkg}"
-done
-repo-add ./public/archpkgs.db.tar.zst ./public/*.pkg.tar.zst
-echo 'Options +Indexes' > ./public/.htaccess
-EOF
+# for some reason gpg key import fails with "bad secret key" when no tty is present
+exec docker run --rm -t -v "$PWD:/build" --user root -e SIGNING_KEY="${SIGNING_KEY:?undefined variable}" --entrypoint bash ghcr.io/dadevel/archpkgs-builder:latest -c 'set -euo pipefail;echo "$SIGNING_KEY" | base64 -d | gpg --import -;mkdir -p ./public;mv ./artifacts/package-*/*.pkg.tar.zst ./public;for pkg in ./public/*.pkg.tar.zst;do gpg --detach-sign --output "${pkg}.sig" --sign "${pkg}";done;repo-add ./public/archpkgs.db.tar.zst ./public/*.pkg.tar.zst;echo "Options +Indexes" > ./public/.htaccess'
