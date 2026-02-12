@@ -1,7 +1,7 @@
 pkgname=impacket-stable
 pkgver=latest
 pkgrel=1
-url=https://github.com/dadevel/impacket.git#branch=latest
+url=https://github.com/fortra/impacket.git
 arch=(any)
 license=(Apache)
 depends=(python)

@@ -14,8 +14,7 @@ package() {
     cp ./wmiexec-pro.py "${pkgdir}/opt/archpkgs/${pkgname}/${pkgname}.py"
     cp -r ./lib "${pkgdir}/opt/archpkgs/${pkgname}"
     declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-    pip install git+https://github.com/dadevel/impacket@latest
-    pip install numpy
+    pip install -r ./requirements.txt
     cat <<EOF >"${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
 set -eu
