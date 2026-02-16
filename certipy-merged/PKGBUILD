@@ -1,7 +1,7 @@
 pkgname=certipy-merged
 pkgver=latest
 pkgrel=1
-url=https://github.com/zimedev/${pkgname}.git
+url=https://github.com/dadevel/${pkgname}.git
 arch=(any)
 license=(MIT)
 depends=(python)
@@ -14,7 +14,6 @@ package() {
   python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install .
-  pip install setuptools  # for pkg_resources
   pip install git+https://github.com/cannatag/ldap3@dev  # for channel binding
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 #!/bin/sh
