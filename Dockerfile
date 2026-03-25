@@ -17,4 +17,4 @@ RUN echo 'OPTIONS=(strip !docs !libtool !staticlibs emptydirs zipman purge !debu
 USER builder
 WORKDIR /build
 ENTRYPOINT ["paru"]
-CMD ["--build", ".", "--noconfirm"]
+CMD ["--build", ".", "--rebuild", "--noconfirm"]
