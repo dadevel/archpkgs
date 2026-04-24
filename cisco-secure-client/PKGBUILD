@@ -1,0 +1,17 @@
+pkgname=cisco-secure-client
+pkgver=latest
+pkgrel=1
+source=("${pkgname}-${pkgver}.rpm::https://dl.sva.de/cisco/linux/5.1.16/RPM/cisco-secure-client-vpn-5.1.16.194-1.x86_64.rpm" vpnagentd.service)
+sha256sums=(fb94f40306b9596c14aca0d4f0faefba308c3eb5b6c29764771d3e5a9e798e75 SKIP)
+arch=(x86_64)
+license=(custom)
+depends=(glib2 glibc icu libffi libgcc libstdc++ libxml2-legacy pcre2 systemd-libs util-linux-libs webkit2gtk-4.1 xz zlib)
+# cisco uses some kind of code-signing which stripping breaks
+options=(!strip)
+
+package() {
+    sha256sum ./opt/cisco/secureclient/lib/libvpncommon.so
+    cp -r ./opt/ "${pkgdir}/"
+    cp -r ./usr/ "${pkgdir}/"
+    install -D -m 644 ./vpnagentd.service "${pkgdir}/usr/lib/systemd/system/"
+}
