@@ -5,7 +5,7 @@ source=('https://dl.sva.de/pulsesecure/linux/pulsesecure_latest.rpm' pulsesecure
 sha256sums=(SKIP SKIP)
 arch=(x86_64)
 license=(custom)
-depends=(curl dbus dmidecode gcc-libs gtkmm3 libgnome-keyring libbsd openssl perl webkit2gtk)
+depends=(curl dbus dmidecode gcc-libs gtkmm3 libgnome-keyring libbsd openssl perl webkit2gtk-4.1)
 
 package() {
     # directory /opt/pulsesecure is more or less hardcoded into the rpm

@@ -1,4 +1,4 @@
-pkgname=cvemap
+pkgname=vulnx
 pkgver=latest
 pkgrel=1
 url="https://github.com/projectdiscovery/${pkgname}.git"

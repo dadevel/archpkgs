@@ -39,7 +39,6 @@ jobs:
     - package-cisco-secure-client
     - package-coercer
     - package-credmaster
-    - package-cvemap
     - package-defaultcreds-cheat-sheet
     - package-dnsrecon
     - package-dnsx
@@ -99,6 +98,7 @@ jobs:
     - package-tlsx
     - package-trevorspray
     - package-unfurl
+    - package-vulnx
     - package-wg-netns
     - package-wmiexec-pro
     if: ${{ always() }}
@@ -393,22 +393,6 @@ jobs:
       with:
         name: package-credmaster
         path: ./credmaster/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-cvemap:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh cvemap
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-cvemap
-        path: ./cvemap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-defaultcreds-cheat-sheet:
@@ -1353,6 +1337,22 @@ jobs:
       with:
         name: package-unfurl
         path: ./unfurl/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-vulnx:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh vulnx
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-vulnx
+        path: ./vulnx/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-wg-netns:
