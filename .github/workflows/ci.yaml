@@ -22,7 +22,6 @@ jobs:
   deploy-repo:
     runs-on: ubuntu-24.04
     needs:
-    - package-acltoolkit
     - package-adidnsdump
     - package-asnmap
     - package-atexec-pro
@@ -121,22 +120,6 @@ jobs:
         RCLONE_CONFIG_HETZNER_USER: ${{ secrets.HETZNER_USERNAME }}
         RCLONE_CONFIG_HETZNER_PASS: ${{ secrets.HETZNER_PASSWORD }}
         RCLONE_CONFIG_HETZNER_EXPLICIT_TLS: 'true'
-  package-acltoolkit:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh acltoolkit
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-acltoolkit
-        path: ./acltoolkit/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
   package-adidnsdump:
     runs-on: ubuntu-24.04
     needs:
