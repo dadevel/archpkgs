@@ -87,7 +87,6 @@ jobs:
     - package-roadtools-hybrid
     - package-sccmhunter
     - package-sccmsecrets
-    - package-scrying
     - package-servicedetector
     - package-shortscan
     - package-shuffledns
@@ -1161,22 +1160,6 @@ jobs:
       with:
         name: package-sccmsecrets
         path: ./sccmsecrets/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-scrying:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh scrying
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-scrying
-        path: ./scrying/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-servicedetector:
