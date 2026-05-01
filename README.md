@@ -45,26 +45,20 @@ sudo pacman -Sl archpkgs
     vim ./example/PKGBUILD
     ~~~
 
-4. Update the build container.
+4. Build the package.
 
     ~~~ bash
-    podman pull ghcr.io/dadevel/archpkgs-builder:latest
-    ~~~
-
-5. Build the package.
-
-    ~~~ bash
-    podman run --rm --userns keep-id -v ./example:/build ghcr.io/dadevel/archpkgs-builder:latest
+    podman run --rm --pull=always --userns keep-id -v ./example:/build ghcr.io/dadevel/archpkgs-builder:latest
     ~~~~
 
-6. Install the package and verify everything is on order.
+5. Install the package and verify everything is on order.
 
     ~~~ bash
     sudo pacman -U ./example/example-1234.5678900-1-any.pkg.tar.zst
     ~~~
 
-7. Run `./generate-workflow.py` to update the CI pipeline.
-8. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
+6. Run `./generate-workflow.py` to update the CI pipeline.
+7. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
 
 ## Tips
 

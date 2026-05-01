@@ -5,14 +5,13 @@ url="https://github.com/patrickhener/${pkgname}.git"
 arch=(any)
 license=(MIT)
 depends=()
-makedepends=(npm go)
+makedepends=(dart-sass esbuild go npm)
 source=("git+${url}")
 sha256sums=(SKIP)
 
 build() {
     cd "${srcdir}/${pkgname}"
-    npm install uglify-js sass
-    npx make build-linux
+    make build-linux
 }
 
 package() {
