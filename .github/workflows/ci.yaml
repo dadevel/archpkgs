@@ -24,7 +24,6 @@ jobs:
     needs:
     - package-acltoolkit
     - package-adidnsdump
-    - package-aquatone
     - package-asnmap
     - package-atexec-pro
     - package-azurehound
@@ -152,22 +151,6 @@ jobs:
       with:
         name: package-adidnsdump
         path: ./adidnsdump/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-aquatone:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh aquatone
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-aquatone
-        path: ./aquatone/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-asnmap:
