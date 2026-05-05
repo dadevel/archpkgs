@@ -1,0 +1,31 @@
+pkgname=titus
+pkgver=latest
+pkgrel=1
+url="https://github.com/praetorian-inc/${pkgname}.git"
+arch=(any)
+license=(GPL3)
+depends=(jre21-openjdk)
+makedepends=(git go jdk21-openjdk)
+install=note.install
+source=("git+${url}")
+sha256sums=(SKIP)
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  go mod tidy
+  sed -i 's|^build-burp: build|build-burp:|' ./Makefile
+  make build-pure
+  make build-burp
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin"
+  install -Dm 755 ./dist/titus "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+  install -Dm 644 ./burp/build/libs/titus-burp-1.0.0-all.jar "${pkgdir}/opt/archpkgs/${pkgname}/titus-burp.jar"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}

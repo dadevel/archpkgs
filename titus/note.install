@@ -1,0 +1,5 @@
+post_install() {
+    echo 'Manual steps required to install Burp extension:'
+    echo '1. mkdir -p ~/.titus && cp /opt/archpkgs/bin/titus ~/.titus/titus'
+    echo '2. Open Burp, go to Extensions/Add and select /opt/archpkgs/titus/titus-burp.jar'
+}

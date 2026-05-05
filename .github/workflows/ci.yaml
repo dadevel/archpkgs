@@ -92,6 +92,7 @@ jobs:
     - package-smbclient-ng
     - package-spk
     - package-subfinder
+    - package-titus
     - package-tlsx
     - package-trevorspray
     - package-unfurl
@@ -1238,6 +1239,22 @@ jobs:
       with:
         name: package-subfinder
         path: ./subfinder/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-titus:
+    runs-on: ubuntu-24.04
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build package
+      run: ./build-package.sh titus
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-titus
+        path: ./titus/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-tlsx:
