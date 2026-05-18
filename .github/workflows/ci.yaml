@@ -26,7 +26,6 @@ jobs:
     - package-asnmap
     - package-atexec-pro
     - package-azurehound
-    - package-bloodhound
     - package-bloodhound-python
     - package-bloodyad
     - package-brutespray
@@ -183,22 +182,6 @@ jobs:
       with:
         name: package-azurehound
         path: ./azurehound/*.pkg.tar.zst
-        retention-days: 1
-        if-no-files-found: error
-  package-bloodhound:
-    runs-on: ubuntu-24.04
-    needs:
-    - build-container
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Build package
-      run: ./build-package.sh bloodhound
-    - name: Upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-bloodhound
-        path: ./bloodhound/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-bloodhound-python:
