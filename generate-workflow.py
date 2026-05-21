@@ -49,7 +49,7 @@ def generate_package_job(package: str) -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v4',
+                'uses': 'actions/checkout@v5',
             },
             {
                 'name': 'Build package',
@@ -57,7 +57,7 @@ def generate_package_job(package: str) -> dict[str, Any]:
             },
             {
                 'name': 'Upload package',
-                'uses': 'actions/upload-artifact@v4',
+                'uses': 'actions/upload-artifact@v7',
                 'with': {
                     'name': f'package-{package}',
                     'path': f'./{package}/*.pkg.tar.zst',
@@ -75,7 +75,7 @@ def generate_setup_job() -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v4',
+                'uses': 'actions/checkout@v5',
             },
             {
                 'name': 'Build and push container',
@@ -98,11 +98,11 @@ def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v4',
+                'uses': 'actions/checkout@v5',
             },
             {
                 'name': 'Download artifacts',
-                'uses': 'actions/download-artifact@v4',
+                'uses': 'actions/download-artifact@v8',
                 'with': {
                     'path': './artifacts',
                 }

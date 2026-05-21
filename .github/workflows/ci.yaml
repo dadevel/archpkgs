@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build and push container
       run: ./build-container.sh
       env:
@@ -102,9 +102,9 @@ jobs:
     concurrency: ci-${{ github.ref }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: ./artifacts
     - name: Create repository
@@ -126,11 +126,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh adidnsdump
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-adidnsdump
         path: ./adidnsdump/*.pkg.tar.zst
@@ -142,11 +142,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh asnmap
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-asnmap
         path: ./asnmap/*.pkg.tar.zst
@@ -158,11 +158,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh atexec-pro
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-atexec-pro
         path: ./atexec-pro/*.pkg.tar.zst
@@ -174,11 +174,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh azurehound
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-azurehound
         path: ./azurehound/*.pkg.tar.zst
@@ -190,11 +190,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh bloodhound-python
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-bloodhound-python
         path: ./bloodhound-python/*.pkg.tar.zst
@@ -206,11 +206,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh bloodyad
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-bloodyad
         path: ./bloodyad/*.pkg.tar.zst
@@ -222,11 +222,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh brutespray
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-brutespray
         path: ./brutespray/*.pkg.tar.zst
@@ -238,11 +238,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh certipy
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-certipy
         path: ./certipy/*.pkg.tar.zst
@@ -254,11 +254,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh certipy-bloodhound
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-certipy-bloodhound
         path: ./certipy-bloodhound/*.pkg.tar.zst
@@ -270,11 +270,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh certipy-merged
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-certipy-merged
         path: ./certipy-merged/*.pkg.tar.zst
@@ -286,11 +286,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh chisel
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-chisel
         path: ./chisel/*.pkg.tar.zst
@@ -302,11 +302,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh cisco-secure-client
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-cisco-secure-client
         path: ./cisco-secure-client/*.pkg.tar.zst
@@ -318,11 +318,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh coercer
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-coercer
         path: ./coercer/*.pkg.tar.zst
@@ -334,11 +334,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh credmaster
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-credmaster
         path: ./credmaster/*.pkg.tar.zst
@@ -350,11 +350,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh defaultcreds-cheat-sheet
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-defaultcreds-cheat-sheet
         path: ./defaultcreds-cheat-sheet/*.pkg.tar.zst
@@ -366,11 +366,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh dnsrecon
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-dnsrecon
         path: ./dnsrecon/*.pkg.tar.zst
@@ -382,11 +382,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh dnsx
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-dnsx
         path: ./dnsx/*.pkg.tar.zst
@@ -398,11 +398,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh donpapi
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-donpapi
         path: ./donpapi/*.pkg.tar.zst
@@ -414,11 +414,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh evil-winrm
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-evil-winrm
         path: ./evil-winrm/*.pkg.tar.zst
@@ -430,11 +430,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh evil-winrm-py
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-evil-winrm-py
         path: ./evil-winrm-py/*.pkg.tar.zst
@@ -446,11 +446,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh exrex
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-exrex
         path: ./exrex/*.pkg.tar.zst
@@ -462,11 +462,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh feroxbuster
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-feroxbuster
         path: ./feroxbuster/*.pkg.tar.zst
@@ -478,11 +478,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh ffuf
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-ffuf
         path: ./ffuf/*.pkg.tar.zst
@@ -494,11 +494,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh getfgpp
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-getfgpp
         path: ./getfgpp/*.pkg.tar.zst
@@ -510,11 +510,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh gmsadumper
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-gmsadumper
         path: ./gmsadumper/*.pkg.tar.zst
@@ -526,11 +526,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh goshs
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-goshs
         path: ./goshs/*.pkg.tar.zst
@@ -542,11 +542,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh gowitness
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-gowitness
         path: ./gowitness/*.pkg.tar.zst
@@ -558,11 +558,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh httpx
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-httpx
         path: ./httpx/*.pkg.tar.zst
@@ -574,11 +574,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh ike-scan
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-ike-scan
         path: ./ike-scan/*.pkg.tar.zst
@@ -590,11 +590,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh iker
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-iker
         path: ./iker/*.pkg.tar.zst
@@ -606,11 +606,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh impacket-stable
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-impacket-stable
         path: ./impacket-stable/*.pkg.tar.zst
@@ -622,11 +622,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh impacket-unstable
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-impacket-unstable
         path: ./impacket-unstable/*.pkg.tar.zst
@@ -638,11 +638,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh katana
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-katana
         path: ./katana/*.pkg.tar.zst
@@ -654,11 +654,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh krbjack
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-krbjack
         path: ./krbjack/*.pkg.tar.zst
@@ -670,11 +670,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh krbrelayx
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-krbrelayx
         path: ./krbrelayx/*.pkg.tar.zst
@@ -686,11 +686,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh lapsdumper
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-lapsdumper
         path: ./lapsdumper/*.pkg.tar.zst
@@ -702,11 +702,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh ldap-shell
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-ldap-shell
         path: ./ldap-shell/*.pkg.tar.zst
@@ -718,11 +718,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh ldapnomnom
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-ldapnomnom
         path: ./ldapnomnom/*.pkg.tar.zst
@@ -734,11 +734,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh manspider
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-manspider
         path: ./manspider/*.pkg.tar.zst
@@ -750,11 +750,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh mapcidr
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-mapcidr
         path: ./mapcidr/*.pkg.tar.zst
@@ -766,11 +766,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh massdns
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-massdns
         path: ./massdns/*.pkg.tar.zst
@@ -782,11 +782,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh max
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-max
         path: ./max/*.pkg.tar.zst
@@ -798,11 +798,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh mitm6
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-mitm6
         path: ./mitm6/*.pkg.tar.zst
@@ -814,11 +814,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh msldap
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-msldap
         path: ./msldap/*.pkg.tar.zst
@@ -830,11 +830,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh name-that-hash
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-name-that-hash
         path: ./name-that-hash/*.pkg.tar.zst
@@ -846,11 +846,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh netexec
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-netexec
         path: ./netexec/*.pkg.tar.zst
@@ -862,11 +862,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh nuclei
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-nuclei
         path: ./nuclei/*.pkg.tar.zst
@@ -878,11 +878,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh paru
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-paru
         path: ./paru/*.pkg.tar.zst
@@ -894,11 +894,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh peas
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-peas
         path: ./peas/*.pkg.tar.zst
@@ -910,11 +910,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh petitpotam
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-petitpotam
         path: ./petitpotam/*.pkg.tar.zst
@@ -926,11 +926,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh pkinittools
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-pkinittools
         path: ./pkinittools/*.pkg.tar.zst
@@ -942,11 +942,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh pretender
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-pretender
         path: ./pretender/*.pkg.tar.zst
@@ -958,11 +958,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh prox-ez
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-prox-ez
         path: ./prox-ez/*.pkg.tar.zst
@@ -974,11 +974,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh pulse-secure
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-pulse-secure
         path: ./pulse-secure/*.pkg.tar.zst
@@ -990,11 +990,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh puredns
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-puredns
         path: ./puredns/*.pkg.tar.zst
@@ -1006,11 +1006,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh pypykatz
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-pypykatz
         path: ./pypykatz/*.pkg.tar.zst
@@ -1022,11 +1022,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh pywhisker
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-pywhisker
         path: ./pywhisker/*.pkg.tar.zst
@@ -1038,11 +1038,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh responder
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-responder
         path: ./responder/*.pkg.tar.zst
@@ -1054,11 +1054,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh roadtools
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-roadtools
         path: ./roadtools/*.pkg.tar.zst
@@ -1070,11 +1070,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh roadtools-hybrid
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-roadtools-hybrid
         path: ./roadtools-hybrid/*.pkg.tar.zst
@@ -1086,11 +1086,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh sccmhunter
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-sccmhunter
         path: ./sccmhunter/*.pkg.tar.zst
@@ -1102,11 +1102,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh sccmsecrets
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-sccmsecrets
         path: ./sccmsecrets/*.pkg.tar.zst
@@ -1118,11 +1118,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh servicedetector
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-servicedetector
         path: ./servicedetector/*.pkg.tar.zst
@@ -1134,11 +1134,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh shortscan
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-shortscan
         path: ./shortscan/*.pkg.tar.zst
@@ -1150,11 +1150,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh shuffledns
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-shuffledns
         path: ./shuffledns/*.pkg.tar.zst
@@ -1166,11 +1166,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh sliver
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-sliver
         path: ./sliver/*.pkg.tar.zst
@@ -1182,11 +1182,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh smbclient-ng
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-smbclient-ng
         path: ./smbclient-ng/*.pkg.tar.zst
@@ -1198,11 +1198,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh spk
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-spk
         path: ./spk/*.pkg.tar.zst
@@ -1214,11 +1214,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh subfinder
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-subfinder
         path: ./subfinder/*.pkg.tar.zst
@@ -1230,11 +1230,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh titus
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-titus
         path: ./titus/*.pkg.tar.zst
@@ -1246,11 +1246,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh tlsx
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-tlsx
         path: ./tlsx/*.pkg.tar.zst
@@ -1262,11 +1262,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh trevorspray
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-trevorspray
         path: ./trevorspray/*.pkg.tar.zst
@@ -1278,11 +1278,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh unfurl
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-unfurl
         path: ./unfurl/*.pkg.tar.zst
@@ -1294,11 +1294,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh vulnx
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-vulnx
         path: ./vulnx/*.pkg.tar.zst
@@ -1310,11 +1310,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh wg-netns
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-wg-netns
         path: ./wg-netns/*.pkg.tar.zst
@@ -1326,11 +1326,11 @@ jobs:
     - build-container
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Build package
       run: ./build-package.sh wmiexec-pro
     - name: Upload package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: package-wmiexec-pro
         path: ./wmiexec-pro/*.pkg.tar.zst
