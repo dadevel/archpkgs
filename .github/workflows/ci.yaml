@@ -10,7 +10,7 @@ permissions:
   - cron: 0 3 * * *
 jobs:
   build-container:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
@@ -20,7 +20,7 @@ jobs:
         GITHUB_USER: dadevel
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-repo:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - package-adidnsdump
     - package-asnmap
@@ -121,7 +121,7 @@ jobs:
         RCLONE_CONFIG_HETZNER_PASS: ${{ secrets.HETZNER_PASSWORD }}
         RCLONE_CONFIG_HETZNER_EXPLICIT_TLS: 'true'
   package-adidnsdump:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -137,7 +137,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-asnmap:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -153,7 +153,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-atexec-pro:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -169,7 +169,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-azurehound:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -185,7 +185,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-bloodhound-python:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -201,7 +201,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-bloodyad:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -217,7 +217,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-brutespray:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -233,7 +233,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-certipy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -249,7 +249,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-certipy-bloodhound:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -265,7 +265,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-certipy-merged:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -281,7 +281,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-chisel:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -297,7 +297,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-cisco-secure-client:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -313,7 +313,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-coercer:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -329,7 +329,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-credmaster:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -345,7 +345,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-defaultcreds-cheat-sheet:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -361,7 +361,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-dnsrecon:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -377,7 +377,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-dnsx:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -393,7 +393,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-donpapi:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -409,7 +409,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-evil-winrm:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -425,7 +425,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-evil-winrm-py:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -441,7 +441,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-exrex:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -457,7 +457,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-feroxbuster:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -473,7 +473,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-ffuf:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -489,7 +489,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-getfgpp:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -505,7 +505,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-gmsadumper:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -521,7 +521,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-goshs:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -537,7 +537,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-gowitness:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -553,7 +553,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-httpx:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -569,7 +569,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-ike-scan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -585,7 +585,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-iker:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -601,7 +601,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-impacket-stable:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -617,7 +617,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-impacket-unstable:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -633,7 +633,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-katana:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -649,7 +649,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-krbjack:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -665,7 +665,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-krbrelayx:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -681,7 +681,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-lapsdumper:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -697,7 +697,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-ldap-shell:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -713,7 +713,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-ldapnomnom:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -729,7 +729,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-manspider:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -745,7 +745,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-mapcidr:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -761,7 +761,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-massdns:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -777,7 +777,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-max:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -793,7 +793,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-mitm6:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -809,7 +809,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-msldap:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -825,7 +825,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-name-that-hash:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -841,7 +841,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-netexec:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -857,7 +857,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-nuclei:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -873,7 +873,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-paru:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -889,7 +889,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-peas:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -905,7 +905,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-petitpotam:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -921,7 +921,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-pkinittools:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -937,7 +937,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-pretender:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -953,7 +953,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-prox-ez:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -969,7 +969,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-pulse-secure:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -985,7 +985,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-puredns:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1001,7 +1001,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-pypykatz:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1017,7 +1017,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-pywhisker:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1033,7 +1033,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-responder:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1049,7 +1049,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-roadtools:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1065,7 +1065,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-roadtools-hybrid:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1081,7 +1081,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-sccmhunter:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1097,7 +1097,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-sccmsecrets:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1113,7 +1113,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-servicedetector:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1129,7 +1129,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-shortscan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1145,7 +1145,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-shuffledns:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1161,7 +1161,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-sliver:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1177,7 +1177,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-smbclient-ng:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1193,7 +1193,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-spk:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1209,7 +1209,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-subfinder:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1225,7 +1225,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-titus:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1241,7 +1241,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-tlsx:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1257,7 +1257,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-trevorspray:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1273,7 +1273,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-unfurl:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1289,7 +1289,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-vulnx:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1305,7 +1305,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-wg-netns:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:
@@ -1321,7 +1321,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
   package-wmiexec-pro:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
     - build-container
     steps:

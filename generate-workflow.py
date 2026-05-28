@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
-# /// script
-# requires-python = '>=3.12'
-# dependencies = [
-#     'pyyaml',
-# ]
-# ///
-
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-RUNNER_OS = 'ubuntu-24.04'
+RUNNER_OS = 'ubuntu-latest'
 
 
 def main() -> None:
