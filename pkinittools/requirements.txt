@@ -4,4 +4,4 @@ minikerberos==0.2.20
 oscrypto==1.3.0
 pyasn1==0.4.8
 six==1.16.0
-unicrypto==0.0.5
+unicrypto==0.0.12
