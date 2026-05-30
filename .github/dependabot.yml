@@ -2,6 +2,14 @@ version: 2
 updates:
 - package-ecosystem: pip
   directory: /
+  exclude-paths:
+  - '*/requirements.txt'
+  schedule:
+    interval: daily
+  cooldown:
+    default-days: 1
+- package-ecosystem: github-actions
+  directory: /
   schedule:
     interval: daily
   cooldown:
