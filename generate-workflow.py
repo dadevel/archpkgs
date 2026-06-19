@@ -42,7 +42,7 @@ def generate_package_job(package: str) -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v6',
+                'uses': 'actions/checkout@v7',
             },
             {
                 'name': 'Build package',
@@ -68,7 +68,7 @@ def generate_setup_job() -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v6',
+                'uses': 'actions/checkout@v7',
             },
             {
                 'name': 'Build and push container',
@@ -91,7 +91,7 @@ def generate_deploy_job(packages: list[str]) -> dict[str, Any]:
         'steps': [
             {
                 'name': 'Checkout',
-                'uses': 'actions/checkout@v6',
+                'uses': 'actions/checkout@v7',
             },
             {
                 'name': 'Download artifacts',
