@@ -11,13 +11,13 @@ sha256sums=(SKIP)
 
 build() {
     cd "${srcdir}/${pkgname}"
-    make build-linux
+    go build -o ./goshs .
 }
 
 package() {
     cd "${srcdir}/${pkgname}"
     mkdir -p "${pkgdir}/opt/archpkgs/bin"
-    install -Dm 755 "./dist/linux_amd64/${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+    install -Dm 755 ./goshs "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
 
 pkgver() {
