@@ -1,7 +1,8 @@
 pkgname=cisco-secure-client
 pkgver=latest
 pkgrel=1
-source=("${pkgname}-${pkgver}.rpm::https://dl.sva.de/cisco/linux/cisco-secure-client-vpn_latest.rpm" vpnagentd.service)
+#source=("${pkgname}-${pkgver}.rpm::https://dl.sva.de/cisco/linux/cisco-secure-client-vpn_latest.rpm" vpnagentd.service)
+source=(cisco-secure-client-vpn_latest.rpm vpnagentd.service)
 sha256sums=(SKIP SKIP)
 arch=(x86_64)
 license=(custom)
@@ -10,7 +11,6 @@ depends=(glib2 glibc icu libffi libgcc libstdc++ libxml2-legacy pcre2 systemd-li
 options=(!strip)
 
 package() {
-    sha256sum ./opt/cisco/secureclient/lib/libvpncommon.so
     cp -r ./opt/ "${pkgdir}/"
     cp -r ./usr/ "${pkgdir}/"
     install -D -m 644 ./vpnagentd.service "${pkgdir}/usr/lib/systemd/system/"
