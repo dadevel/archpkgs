@@ -24,7 +24,7 @@ package() {
 #!/bin/sh
 set -eu
 cd /opt/archpkgs/${pkgname}
-exec ./BloodHound
+exec ./BloodHound "$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/${pkgname}"
 }
