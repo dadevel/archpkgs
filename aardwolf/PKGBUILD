@@ -1,0 +1,41 @@
+pkgname=aardwolf
+pkgver=latest
+pkgrel=1
+url="https://github.com/skelsec/aardwolf"
+arch=(x86_64)
+license=(MIT)
+depends=(python)
+makedepends=(rust python-wheel)
+source=(
+  "aardwolf::git+https://github.com/skelsec/aardwolf.git"
+  "aardwolfgui::git+https://github.com/skelsec/aardwolfgui.git"
+)
+sha256sums=(SKIP SKIP)
+
+package() {
+  cd "${srcdir}"
+  mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+  pip install ./aardwolf
+  pip install ./aardwolfgui
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpscan"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/ardpscan "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/ardpscan"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/aardpclient"
+#!/bin/sh
+set -eu
+export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
+exec python /opt/archpkgs/${pkgname}/bin/aardpclient "\$@"
+EOF
+  chmod +x "${pkgdir}/opt/archpkgs/bin/aardpclient"
+}
+
+pkgver() {
+  cd "${srcdir}/aardwolf"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}

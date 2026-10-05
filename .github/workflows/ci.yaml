@@ -22,6 +22,7 @@ jobs:
   deploy-repo:
     runs-on: ubuntu-latest
     needs:
+    - package-aardwolf
     - package-adidnsdump
     - package-asnmap
     - package-atexec-pro
@@ -120,6 +121,22 @@ jobs:
         RCLONE_CONFIG_HETZNER_USER: ${{ secrets.HETZNER_USERNAME }}
         RCLONE_CONFIG_HETZNER_PASS: ${{ secrets.HETZNER_PASSWORD }}
         RCLONE_CONFIG_HETZNER_EXPLICIT_TLS: 'true'
+  package-aardwolf:
+    runs-on: ubuntu-latest
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Build package
+      run: ./build-package.sh aardwolf
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: package-aardwolf
+        path: ./aardwolf/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-adidnsdump:
     runs-on: ubuntu-latest
     needs:
@@ -1336,4 +1353,3 @@ jobs:
         path: ./wmiexec-pro/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
-
