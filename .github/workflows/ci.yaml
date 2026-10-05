@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
     - package-aardwolf
+    - package-acltoolkit
     - package-adidnsdump
     - package-asnmap
     - package-atexec-pro
@@ -99,7 +100,6 @@ jobs:
     - package-vulnx
     - package-wg-netns
     - package-wmiexec-pro
-    if: ${{ always() }}
     concurrency: ci-${{ github.ref }}
     steps:
     - name: Checkout
@@ -135,6 +135,22 @@ jobs:
       with:
         name: package-aardwolf
         path: ./aardwolf/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-acltoolkit:
+    runs-on: ubuntu-latest
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Build package
+      run: ./build-package.sh acltoolkit
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: package-acltoolkit
+        path: ./acltoolkit/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-adidnsdump:

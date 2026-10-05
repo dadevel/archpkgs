@@ -3,7 +3,7 @@ set -euo pipefail
 
 package_dir="${1:?usage: test-package.sh PACKAGE}"
 if [[ ! -f "$package_dir/test.sh" ]]; then
-  echo "No runtime test defined for $package_dir; skipping."
+  echo "[?] No runtime test defined for $package_dir; skipping."
   exit 0
 fi
 
@@ -16,5 +16,15 @@ fi
     pacman -Syu --noconfirm
     pacman -U --noconfirm /package/*.pkg.tar.zst
     export PATH="/opt/archpkgs/bin:$PATH"
-    timeout --kill-after=10s 120s sudo -u builder --preserve-env=PATH bash /package/test.sh
+    test_log=$(mktemp)
+    trap "rm -f -- \"$test_log\"" EXIT
+    echo "Running runtime test..."
+    if timeout --kill-after=10s 120s sudo -u builder --preserve-env=PATH bash /package/test.sh >"$test_log" 2>&1; then
+      echo "[+] Test success"
+    else
+      test_status=$?
+      cat "$test_log" >&2
+      echo "[-] Test failed (exit $test_status)" >&2
+      exit "$test_status"
+    fi
   '

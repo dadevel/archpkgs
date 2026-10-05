@@ -93,4 +93,18 @@ A failed test lets the build script fail and prevents the CI package artifact fr
 
 ## Tips
 
+### Runtime tests
+
+Add a Bash `test.sh` with `set -euo pipefail` alongside a package's `PKGBUILD`.
+`build-package.sh` automatically tests the installed package in a separate Arch
+container as the unprivileged `builder` user, from `/tmp`, with
+`/opt/archpkgs/bin` on `PATH` and a 120-second timeout. Packages without tests
+are skipped. A failure blocks artifact upload and repository deployment.
+
+To test an existing archive without rebuilding, run `./test-package.sh example`,
+or `CONTAINER_ENGINE=podman ./test-package.sh example` for rootless Podman.
+Direct builds using the `podman run` command above need this separate test call.
+The current PKINITtools and ACLToolkit tests check CLI startup with `--help`;
+they do not test operations against AD.
+
 If building Rust fails with a strange linker error, use `CFLAGS="${CFLAGS/-flto=auto/}" cargo build ...`.
