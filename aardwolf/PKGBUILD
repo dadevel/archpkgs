@@ -25,6 +25,10 @@ package() {
       sed -i "1s|^#!.*|#!/opt/archpkgs/${pkgname}/bin/python|" "${binpath}"
     fi
   done < <(find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -perm -u+x -print0)
+  find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -name 'activate*' -exec \
+    sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" {} +
+  sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" \
+    "${pkgdir}/opt/archpkgs/${pkgname}/pyvenv.cfg"
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpscan"
 #!/bin/sh
 set -eu
