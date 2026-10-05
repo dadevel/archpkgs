@@ -1,6 +1,6 @@
 pkgname=aardwolf
 pkgver=latest
-pkgrel=1
+pkgrel=2
 url="https://github.com/skelsec/aardwolf"
 arch=(x86_64)
 license=(MIT)
@@ -19,6 +19,12 @@ package() {
   declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
   pip install ./aardwolf
   pip install ./aardwolfgui
+  pip install 'Pillow<12'
+  while IFS= read -r -d '' binpath; do
+    if head -n 1 "${binpath}" | grep -Fq "${pkgdir}"; then
+      sed -i "1s|^#!.*|#!/opt/archpkgs/${pkgname}/bin/python|" "${binpath}"
+    fi
+  done < <(find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -perm -u+x -print0)
   cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpscan"
 #!/bin/sh
 set -eu
@@ -26,13 +32,13 @@ export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} 
 exec python /opt/archpkgs/${pkgname}/bin/ardpscan "\$@"
 EOF
   chmod +x "${pkgdir}/opt/archpkgs/bin/ardpscan"
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/aardpclient"
+  cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpclient"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/aardpclient "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/ardpclient "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/aardpclient"
+  chmod +x "${pkgdir}/opt/archpkgs/bin/ardpclient"
 }
 
 pkgver() {
