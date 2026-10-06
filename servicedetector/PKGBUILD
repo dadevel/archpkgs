@@ -1,5 +1,5 @@
 pkgname=servicedetector
-pkgver=13.bc9e86c
+pkgver=latest
 pkgrel=1
 url="https://github.com/dadevel/${pkgname}.git"
 arch=(any)

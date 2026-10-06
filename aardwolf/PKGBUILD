@@ -1,6 +1,6 @@
 pkgname=aardwolf
 pkgver=latest
-pkgrel=2
+pkgrel=1
 url="https://github.com/skelsec/aardwolf"
 arch=(x86_64)
 license=(MIT)
@@ -26,7 +26,7 @@ package() {
             sed -i "1s|^#!.*|#!/opt/archpkgs/${pkgname}/bin/python|" "${binpath}"
         fi
     done < <(find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -perm -u+x -print0)
-    find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -name 'activate*' -exec sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" {} +
+    find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -name 'activate*' -exec sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" '{}' +
     sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" "${pkgdir}/opt/archpkgs/${pkgname}/pyvenv.cfg"
     for filename in ardpscan ardpclient; do
         cat << EOF > "${pkgdir}/opt/archpkgs/bin/${filename}"
@@ -35,7 +35,8 @@ set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
 exec python /opt/archpkgs/${pkgname}/bin/${filename} "\$@"
 EOF
-    chmod +x "${pkgdir}/opt/archpkgs/bin/${filename}"
+        chmod +x "${pkgdir}/opt/archpkgs/bin/${filename}"
+    done
 }
 
 pkgver() {

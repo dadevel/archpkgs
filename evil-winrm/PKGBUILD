@@ -4,7 +4,7 @@ pkgrel=1
 url="https://github.com/hackplayers/${pkgname}.git"
 arch=(any)
 license=(LGPL3)
-depends=(ruby ruby-bundler)
+depends=(ruby ruby-bundler ruby-erb)
 source=("git+${url}")
 sha256sums=(SKIP)
 
