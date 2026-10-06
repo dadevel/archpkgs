@@ -91,6 +91,16 @@ CONTAINER_ENGINE=podman ./test-package.sh aardwolf
 
 A failed test lets the build script fail and prevents the CI package artifact from being uploaded.
 
+### Test Coverage 
+
+List which packages have test scripts and which still need them:
+
+~~~ bash
+./test-coverage.py
+~~~
+
+This reports the presence of test scripts, not whether they pass or how much application code they exercise. Both scripts can be invoked from any directory.
+
 ## Tips
 
 ### Runtime tests
