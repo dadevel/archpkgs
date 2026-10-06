@@ -2,5 +2,5 @@
 set -euo pipefail
 
 for command in shortscan shortutil; do
-    "$command" --help
+    $command --help
 done

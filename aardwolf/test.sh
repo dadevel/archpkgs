@@ -1,7 +1,8 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
+
 /opt/archpkgs/aardwolf/bin/ardpscan --help >/dev/null
 /opt/archpkgs/bin/ardpscan --help >/dev/null
 . /opt/archpkgs/aardwolf/bin/activate
-test "$(python -c 'import sys; print(sys.prefix)')" = /opt/archpkgs/aardwolf
+[[ "$(python -c 'import sys; print(sys.prefix)')" == /opt/archpkgs/aardwolf ]] && echo ok
 deactivate

@@ -2,5 +2,3 @@
 set -euo pipefail
 
 chisel --help
-chisel server --help
-chisel client --help

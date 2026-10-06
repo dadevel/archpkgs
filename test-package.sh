@@ -1,30 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-package_dir="${1:?usage: test-package.sh PACKAGE}"
-if [[ ! -f "$package_dir/test.sh" ]]; then
-  echo "[?] No runtime test defined for $package_dir; skipping."
-  exit 0
+if type podman &> /dev/null; then
+    declare -r container_engine=podman
+else
+    declare -r container_engine=docker
 fi
 
-# Test the installed archive, including its final paths and declared dependencies.
-"${CONTAINER_ENGINE:-docker}" run --rm \
-  -v "$PWD/$package_dir:/package:ro" \
-  --user root --workdir /tmp --entrypoint bash \
-  ghcr.io/dadevel/archpkgs-builder:latest -c '
+"${container_engine}" run --rm -v "$PWD/$1:/package:ro" --user root --workdir /tmp --entrypoint bash ghcr.io/dadevel/archpkgs-builder:latest -c '
     set -euo pipefail
     pacman -Syu --noconfirm
     pacman -U --noconfirm /package/*.pkg.tar.zst
     export PATH="/opt/archpkgs/bin:$PATH"
-    test_log=$(mktemp)
-    trap "rm -f -- \"$test_log\"" EXIT
-    echo "Running runtime test..."
-    if timeout --kill-after=10s 120s sudo -u builder --preserve-env=PATH bash /package/test.sh >"$test_log" 2>&1; then
-      echo "[+] Test success"
+    if timeout --kill-after=10s 120s sudo -u builder --preserve-env=PATH bash /package/test.sh; then
+        echo "test succeeded" >&2
     else
-      test_status=$?
-      cat "$test_log" >&2
-      echo "[-] Test failed (exit $test_status)" >&2
-      exit "$test_status"
+        test_status=$?
+        echo "test failed, exit code ${test_status}" >&2
+        exit "${test_status}"
     fi
-  '
+'

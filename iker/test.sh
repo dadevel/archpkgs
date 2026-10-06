@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# The CLI checks root before parsing --help; load its parser without scanning.
+# cli checks root before parsing args, load parser without scanning
 python3 - /opt/archpkgs/bin/iker --help <<'PY'
 import runpy
 import sys

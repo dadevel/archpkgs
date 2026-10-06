@@ -49,6 +49,10 @@ def generate_package_job(package: str) -> dict[str, Any]:
                 'run': f'./build-package.sh {package}',
             },
             {
+                'name': 'Test package',
+                'run': f'./test-package.sh {package}',
+            },
+            {
                 'name': 'Upload package',
                 'uses': 'actions/upload-artifact@v7',
                 'with': {

@@ -13,39 +13,32 @@ source=(
 sha256sums=(SKIP SKIP)
 
 package() {
-  cd "${srcdir}"
-  mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
-  python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
-  declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
-  pip install ./aardwolf
-  pip install ./aardwolfgui
-  pip install 'Pillow<12'
-  while IFS= read -r -d '' binpath; do
-    if head -n 1 "${binpath}" | grep -Fq "${pkgdir}"; then
-      sed -i "1s|^#!.*|#!/opt/archpkgs/${pkgname}/bin/python|" "${binpath}"
-    fi
-  done < <(find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -perm -u+x -print0)
-  find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -name 'activate*' -exec \
-    sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" {} +
-  sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" \
-    "${pkgdir}/opt/archpkgs/${pkgname}/pyvenv.cfg"
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpscan"
+    cd "${srcdir}"
+    mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
+    python -m venv "${pkgdir}/opt/archpkgs/${pkgname}"
+    declare -x VIRTUAL_ENV="${pkgdir}/opt/archpkgs/${pkgname}" PYTHONPATH="${pkgdir}/opt/archpkgs/${pkgname}" PATH="${pkgdir}/opt/archpkgs/${pkgname}/bin:$PATH"
+    pip install ./aardwolf
+    pip install ./aardwolfgui
+    pip install 'Pillow<12'
+    # patch venv path
+    while IFS= read -r -d '' binpath; do
+        if head -n 1 "${binpath}" | grep -Fq "${pkgdir}"; then
+            sed -i "1s|^#!.*|#!/opt/archpkgs/${pkgname}/bin/python|" "${binpath}"
+        fi
+    done < <(find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -perm -u+x -print0)
+    find "${pkgdir}/opt/archpkgs/${pkgname}/bin" -maxdepth 1 -type f -name 'activate*' -exec sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" {} +
+    sed -i "s|${pkgdir}/opt/archpkgs/${pkgname}|/opt/archpkgs/${pkgname}|g" "${pkgdir}/opt/archpkgs/${pkgname}/pyvenv.cfg"
+    for filename in ardpscan ardpclient; do
+        cat << EOF > "${pkgdir}/opt/archpkgs/bin/${filename}"
 #!/bin/sh
 set -eu
 export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/ardpscan "\$@"
+exec python /opt/archpkgs/${pkgname}/bin/${filename} "\$@"
 EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/ardpscan"
-  cat << EOF > "${pkgdir}/opt/archpkgs/bin/ardpclient"
-#!/bin/sh
-set -eu
-export VIRTUAL_ENV=/opt/archpkgs/${pkgname} PYTHONPATH=/opt/archpkgs/${pkgname} PATH="/opt/archpkgs/${pkgname}/bin:\$PATH"
-exec python /opt/archpkgs/${pkgname}/bin/ardpclient "\$@"
-EOF
-  chmod +x "${pkgdir}/opt/archpkgs/bin/ardpclient"
+    chmod +x "${pkgdir}/opt/archpkgs/bin/${filename}"
 }
 
 pkgver() {
-  cd "${srcdir}/aardwolf"
-  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+    cd "${srcdir}/${pkgname}"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }

@@ -45,76 +45,31 @@ sudo pacman -Sl archpkgs
     vim ./example/PKGBUILD
     ~~~
 
-4. Build the package and run its runtime test, if provided.
-
-    ~~~ bash 
-
-    podman run --rm --pull=always --userns keep-id -v ./example:/build ghcr.io/dadevel/archpkgs-builder:latest
-    ~~~
-
-    You can also use the `build-package.sh` script:
+4. Build the package. You need rootless Podman or Docker and membership in the `docker` group.
 
     ~~~ bash
-    CONTAINER_ENGINE=podman ./build-package.sh example
+    ./build-package.sh example
     ~~~
 
-    Run the scripts from the repository root. They use Docker by default. So you have to set `CONTAINER_ENGINE=podman` to use Podman.
+    With rootless Podman, the build script maps the container's `builder` user to your host user so the package directory stays writable.
+    `makepkg` may update `pkgver` and `pkgrel` in the mounted `PKGBUILD` during the build.
 
-    With rootless Podman, the build script maps the container's `builder` user
-    to your host user so the package directory stays writable. `makepkg` may
-    update `pkgver` and `pkgrel` in the mounted `PKGBUILD` during the build.
+5. Add tests and run them. The `test.sh` should at least verify that the command prints its help page.
 
-5. Install the package and verify everything is in order.
+    ~~~ bash
+    vim ./example/test.sh
+    ./test-package.sh example
+    ~~~
+
+6. Install the package and verify everything is in order.
 
     ~~~ bash
     sudo pacman -U ./example/example-1234.5678900-1-any.pkg.tar.zst
     ~~~
 
-6. Run `./generate-workflow.py` to update the CI pipeline.
-7. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
-
-## Runtime tests
-
-Place an optional Bash `test.sh` alongside a package's `PKGBUILD`. Use `set -euo pipefail` so a failing command fails the test. After a successful build, `build-package.sh` automatically invokes `test-package.sh`, which runs the package's `test.sh` if it exists. 
-
-For example, build and test aardwolf:
-
-~~~ bash
-CONTAINER_ENGINE=podman ./build-package.sh aardwolf
-~~~
-
-To test an already built package without rebuilding:
-
-~~~ bash
-CONTAINER_ENGINE=podman ./test-package.sh aardwolf
-~~~
-
-A failed test lets the build script fail and prevents the CI package artifact from being uploaded.
-
-### Test Coverage 
-
-List which packages have test scripts and which still need them:
-
-~~~ bash
-./test-coverage.py
-~~~
-
-This reports the presence of test scripts, not whether they pass or how much application code they exercise. Both scripts can be invoked from any directory.
+7. Run `./generate-workflow.py` to update the CI pipeline.
+8. Open a [pull request](https://github.com/dadevel/archpkgs/pulls).
 
 ## Tips
-
-### Runtime tests
-
-Add a Bash `test.sh` with `set -euo pipefail` alongside a package's `PKGBUILD`.
-`build-package.sh` automatically tests the installed package in a separate Arch
-container as the unprivileged `builder` user, from `/tmp`, with
-`/opt/archpkgs/bin` on `PATH` and a 120-second timeout. Packages without tests
-are skipped. A failure blocks artifact upload and repository deployment.
-
-To test an existing archive without rebuilding, run `./test-package.sh example`,
-or `CONTAINER_ENGINE=podman ./test-package.sh example` for rootless Podman.
-Direct builds using the `podman run` command above need this separate test call.
-The current PKINITtools and ACLToolkit tests check CLI startup with `--help`;
-they do not test operations against AD.
 
 If building Rust fails with a strange linker error, use `CFLAGS="${CFLAGS/-flto=auto/}" cargo build ...`.

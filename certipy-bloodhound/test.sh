@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Electron's Node mode checks the runtime and app entry point without a display.
+# Electron's node mode checks the runtime and app entrypoint without a display
 output=$(ELECTRON_RUN_AS_NODE=1 certipy-bloodhound -e '
     const fs = require("fs");
     const path = require("path");
