@@ -1,0 +1,27 @@
+pkgname=godap
+pkgver=latest
+pkgrel=1
+pkgdesc="Terminal user interface for LDAP"
+url="https://github.com/Macmod/godap"
+arch=(x86_64)
+license=(MIT)
+depends=(glibc)
+makedepends=(git go)
+source=("godap::git+${url}.git")
+sha256sums=(SKIP)
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  go build -trimpath -buildmode=pie -mod=readonly -modcacherw -ldflags '-s -w' -o "${pkgname}" .
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  install -Dm755 "${pkgname}" "${pkgdir}/opt/archpkgs/bin/${pkgname}"
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}

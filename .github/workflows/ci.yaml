@@ -49,6 +49,7 @@ jobs:
     - package-ffuf
     - package-getfgpp
     - package-gmsadumper
+    - package-godap
     - package-goshs
     - package-gowitness
     - package-httpx
@@ -603,6 +604,24 @@ jobs:
       with:
         name: package-gmsadumper
         path: ./gmsadumper/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-godap:
+    runs-on: ubuntu-latest
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Build package
+      run: ./build-package.sh godap
+    - name: Test package
+      run: ./test-package.sh godap
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: package-godap
+        path: ./godap/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-goshs:
