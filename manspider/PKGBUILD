@@ -8,6 +8,18 @@ depends=(python tesseract antiword)
 source=("git+${url}")
 sha256sums=(SKIP)
 
+prepare() {
+  cd "${srcdir}/${pkgname}"
+
+  if ! grep -qxF '[tool.hatch.metadata]' pyproject.toml; then
+    cat >> pyproject.toml <<'EOF'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+EOF
+  fi
+}
+
 package() {
   cd "${srcdir}/${pkgname}"
   mkdir -p "${pkgdir}/opt/archpkgs/bin" "${pkgdir}/opt/archpkgs/${pkgname}"
