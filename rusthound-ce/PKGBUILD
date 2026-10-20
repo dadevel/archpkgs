@@ -1,0 +1,28 @@
+pkgname=rusthound-ce
+pkgver=latest
+pkgrel=1
+pkgdesc='Active Directory data collector for BloodHound Community Edition'
+url="https://github.com/g0h4n/${pkgname}"
+arch=(x86_64)
+license=(MIT)
+depends=(gcc-libs glibc krb5)
+makedepends=(git rust clang pkgconf)
+source=("${pkgname}::git+${url}.git")
+sha256sums=(SKIP)
+
+prepare() {
+    cd "${srcdir}/${pkgname}"
+    cargo fetch --locked
+}
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    export CFLAGS="${CFLAGS/-flto=auto/}" RUSTUP_TOOLCHAIN=stable
+    cargo build --release --frozen
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    install -Dm755 ./target/release/rusthound-ce "${pkgdir}/opt/archpkgs/bin/rusthound-ce"
+    install -Dm644 ./LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
