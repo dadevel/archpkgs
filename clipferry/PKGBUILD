@@ -1,0 +1,36 @@
+pkgname=clipferry
+pkgver=latest
+pkgrel=1
+pkgdesc='Event-driven X11 and Wayland clipboard bridge'
+url="https://github.com/jmylchreest/${pkgname}"
+arch=(x86_64)
+license=(MIT)
+depends=(glibc gcc-libs)
+makedepends=(rust git)
+source=("clipferry::git+${CLIPFERRY_REPO:-${url}.git}")
+sha256sums=(SKIP)
+
+prepare() {
+    cd "${srcdir}/clipferry"
+    export CARGO_HOME="${srcdir}/cargo-home"
+    cargo fetch --locked --target "$(rustc -vV | sed -n 's/^host: //p')"
+}
+
+build() {
+    cd "${srcdir}/clipferry"
+    export CARGO_HOME="${srcdir}/cargo-home"
+    export CFLAGS="${CFLAGS/-flto=auto/}"
+    cargo build --frozen --release --package clipferry --target-dir target
+}
+
+package() {
+    cd "${srcdir}/clipferry"
+    install -Dm0755 ./target/release/clipferry "${pkgdir}/usr/bin/clipferry"
+    install -Dm0644 ./contrib/clipferry.service "${pkgdir}/usr/lib/systemd/user/clipferry.service"
+    install -Dm0644 ./LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+pkgver() {
+    cd "${srcdir}/clipferry"
+    printf '%s.%s\n' "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}

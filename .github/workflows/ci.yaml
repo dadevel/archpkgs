@@ -27,6 +27,7 @@ jobs:
     - package-adidnsdump
     - package-asnmap
     - package-atexec-pro
+    - package-atuin-redact
     - package-azurehound
     - package-bloodhound-python
     - package-bloodyad
@@ -36,6 +37,7 @@ jobs:
     - package-certipy-merged
     - package-chisel
     - package-cisco-secure-client
+    - package-clipferry
     - package-coercer
     - package-credmaster
     - package-defaultcreds-cheat-sheet
@@ -210,6 +212,22 @@ jobs:
         path: ./atexec-pro/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
+  package-atuin-redact:
+    runs-on: ubuntu-latest
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Build package
+      run: ./build-package.sh atuin-redact
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: package-atuin-redact
+        path: ./atuin-redact/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
   package-azurehound:
     runs-on: ubuntu-latest
     needs:
@@ -370,6 +388,22 @@ jobs:
       with:
         name: package-cisco-secure-client
         path: ./cisco-secure-client/*.pkg.tar.zst
+        retention-days: 1
+        if-no-files-found: error
+  package-clipferry:
+    runs-on: ubuntu-latest
+    needs:
+    - build-container
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Build package
+      run: ./build-package.sh clipferry
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: package-clipferry
+        path: ./clipferry/*.pkg.tar.zst
         retention-days: 1
         if-no-files-found: error
   package-coercer:

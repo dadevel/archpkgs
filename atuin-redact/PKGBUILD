@@ -1,0 +1,38 @@
+pkgname=atuin-redact
+pkgver=latest
+pkgrel=1
+pkgdesc='Magical shell history, with configurable command redaction'
+url='https://github.com/glynx/atuin'
+arch=(x86_64)
+license=(MIT)
+depends=(glibc gcc-libs sqlite)
+makedepends=(cargo git protobuf)
+provides=(atuin)
+conflicts=(atuin)
+source=("atuin::git+${ATUIN_REDACT_REPO:-${url}.git}#branch=feat/command-redaction-replacements")
+sha256sums=(SKIP)
+
+build() {
+    cd "${srcdir}/atuin"
+    export LIBSQLITE3_SYS_USE_PKG_CONFIG=1
+    export CFLAGS="${CFLAGS/-flto=auto/}"
+    cargo build --release --locked -p atuin
+    mkdir -p ./completions
+    for sh in bash fish zsh; do
+        ./target/release/atuin gen-completions -s "${sh}" -o ./completions/
+    done
+}
+
+package() {
+    cd "${srcdir}/atuin"
+    install -Dm0755 -t "${pkgdir}/usr/bin/" ./target/release/atuin
+    install -Dm0644 ./completions/atuin.bash "${pkgdir}/usr/share/bash-completion/completions/atuin"
+    install -Dm0644 -t "${pkgdir}/usr/share/fish/vendor_completions.d/" ./completions/atuin.fish
+    install -Dm0644 -t "${pkgdir}/usr/share/zsh/site-functions/" ./completions/_atuin
+    install -Dm0644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" ./LICENSE
+}
+
+pkgver() {
+    cd "${srcdir}/atuin"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
