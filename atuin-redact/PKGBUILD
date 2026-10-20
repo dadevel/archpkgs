@@ -1,44 +1,38 @@
-# Atuin with configurable command redaction (`[security] redact_patterns` with replacements),
-# built from the feature branch until it is released upstream. Replaces the official `atuin`
-# package; the sync protocol is unchanged, so official clients and servers keep working with it.
-#
-# Build from a local checkout instead of GitHub:
-#   ATUIN_REDACT_REPO=file:///path/to/atuin makepkg -si
 pkgname=atuin-redact
 pkgver=latest
 pkgrel=1
 pkgdesc='Magical shell history, with configurable command redaction'
-url="https://github.com/glynx/atuin"
+url='https://github.com/glynx/atuin'
 arch=(x86_64)
 license=(MIT)
 depends=(glibc gcc-libs sqlite)
 makedepends=(cargo git protobuf)
 provides=(atuin)
 conflicts=(atuin)
-_branch=feat/command-redaction-replacements
-source=("atuin::git+${ATUIN_REDACT_REPO:-${url}.git}#branch=${_branch}")
+source=("atuin::git+${ATUIN_REDACT_REPO:-${url}.git}#branch=feat/command-redaction-replacements")
 sha256sums=(SKIP)
 
-pkgver() {
-  cd "${srcdir}/atuin"
-  echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
-}
-
 build() {
-  cd "${srcdir}/atuin"
-  export LIBSQLITE3_SYS_USE_PKG_CONFIG=1
-  CFLAGS="${CFLAGS/-flto=auto/}" cargo build --release --locked -p atuin
-  mkdir -p completions
-  for sh in bash fish zsh; do
-    ./target/release/atuin gen-completions -s "${sh}" -o completions/
-  done
+    cd "${srcdir}/atuin"
+    export LIBSQLITE3_SYS_USE_PKG_CONFIG=1
+    export CFLAGS="${CFLAGS/-flto=auto/}"
+    cargo build --release --locked -p atuin
+    mkdir -p ./completions
+    for sh in bash fish zsh; do
+        ./target/release/atuin gen-completions -s "${sh}" -o ./completions/
+    done
 }
 
 package() {
-  cd "${srcdir}/atuin"
-  install -Dm0755 -t "${pkgdir}/usr/bin/" target/release/atuin
-  install -Dm0644 completions/atuin.bash "${pkgdir}/usr/share/bash-completion/completions/atuin"
-  install -Dm0644 -t "${pkgdir}/usr/share/fish/vendor_completions.d/" completions/atuin.fish
-  install -Dm0644 -t "${pkgdir}/usr/share/zsh/site-functions/" completions/_atuin
-  install -Dm0644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" LICENSE
+    cd "${srcdir}/atuin"
+    install -Dm0755 -t "${pkgdir}/usr/bin/" ./target/release/atuin
+    install -Dm0644 ./completions/atuin.bash "${pkgdir}/usr/share/bash-completion/completions/atuin"
+    install -Dm0644 -t "${pkgdir}/usr/share/fish/vendor_completions.d/" ./completions/atuin.fish
+    install -Dm0644 -t "${pkgdir}/usr/share/zsh/site-functions/" ./completions/_atuin
+    install -Dm0644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" ./LICENSE
+}
+
+pkgver() {
+    cd "${srcdir}/atuin"
+    echo "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
